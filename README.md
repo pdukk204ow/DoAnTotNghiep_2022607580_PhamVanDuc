@@ -1,7 +1,7 @@
 
 <p align="center">
   <strong>ĐỒ ÁN TỐT NGHIỆP / DỰ ÁN HỆ THỐNG THƯƠNG MẠI ĐIỆN TỬ</strong><br>
-  <em>Đề tài: Xây dựng Website bán sách cho cửa hàng Văn Đức sử dụng Java và MySQL có tích hợp AI</em>
+  <em>Đề tài: Xây dựng Website bán sách cho cửa hàng Văn Đức sử dụng Java và MySQL có tích hợp AI <br> Họ và tên: Phạm Văn Đức <br> Mã sinh viên: 2022607580 <br>Giảng viên hướng dẫn: ThS. Phạm Thế Anh</em>
 </p>
 
 <p align="center">
