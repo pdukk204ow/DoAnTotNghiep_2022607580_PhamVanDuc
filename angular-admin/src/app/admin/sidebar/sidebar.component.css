@@ -1,0 +1,187 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 1020;
+  align-self: flex-start;
+}
+
+.admin-sidebar-nav {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
+  width: 250px !important;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0 0.75rem 2rem 0.75rem;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+/* Brand */
+.sidebar-brand {
+  height: 4.5rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.5rem;
+}
+
+.brand-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+}
+
+.brand-name {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.brand-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 0.12em;
+  margin-top: 2px;
+}
+
+/* Headings */
+.sidebar-heading {
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #64748b !important;
+  padding: 1rem 0.75rem 0.35rem 0.75rem !important;
+}
+
+/* Dividers */
+.sidebar-divider-wrapper {
+  padding: 0 0.5rem;
+}
+
+hr.sidebar-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  margin: 0.5rem 0 !important;
+}
+
+/* Navigation Items */
+.nav-item {
+  margin-bottom: 3px;
+  position: relative;
+}
+
+.nav-link {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.65rem 0.85rem !important;
+  border-radius: 10px !important;
+  color: #94a3b8 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-icon-box {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  margin-right: 0.75rem !important;
+  color: #94a3b8;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+}
+
+.nav-icon-box i {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 0.95rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  text-align: center !important;
+}
+
+.nav-title {
+  flex: 1;
+  font-size: 0.875rem !important;
+  line-height: 1.25 !important;
+  white-space: nowrap;
+}
+
+/* Hover State */
+.nav-item:hover .nav-link {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.nav-item:hover .nav-icon-box {
+  color: #10b981;
+  transform: scale(1.08);
+}
+
+/* Active State */
+.nav-item.active .nav-link {
+  color: #ffffff !important;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%) !important;
+  font-weight: 600 !important;
+}
+
+.nav-item.active .nav-icon-box {
+  background: #10b981;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: #10b981;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 10px #10b981;
+}

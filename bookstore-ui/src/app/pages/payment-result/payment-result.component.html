@@ -1,0 +1,74 @@
+<section class="payment-result-page">
+  <div class="container">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="result-card loading-card">
+      <div class="spinner"></div>
+      <p>Đang xác minh thanh toán...</p>
+    </div>
+
+    <!-- Success -->
+    <div *ngIf="!loading && success" class="result-card success-card">
+      <div class="icon-circle success-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h1>Thanh toán thành công!</h1>
+      <p class="subtitle">Đơn hàng của bạn đã được thanh toán thành công qua VNPay</p>
+
+      <div class="info-table">
+        <div class="info-row">
+          <span>Mã đơn hàng</span>
+          <strong>#{{ txnRef }}</strong>
+        </div>
+        <div class="info-row">
+          <span>Số tiền thanh toán</span>
+          <strong>{{ amount | number }} đ</strong>
+        </div>
+        <div class="info-row" *ngIf="transactionNo">
+          <span>Mã giao dịch VNPay</span>
+          <strong>{{ transactionNo }}</strong>
+        </div>
+        <div class="info-row" *ngIf="bankCode">
+          <span>Ngân hàng</span>
+          <strong>{{ bankCode }}</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary-btn" (click)="goToOrders()">Xem đơn hàng</button>
+        <button class="secondary-btn" (click)="goHome()">Về trang chủ</button>
+      </div>
+    </div>
+
+    <!-- Failed -->
+    <div *ngIf="!loading && !success" class="result-card failed-card">
+      <div class="icon-circle failed-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+      <h1>Thanh toán thất bại</h1>
+      <p class="subtitle">{{ message }}</p>
+
+      <div class="info-table" *ngIf="txnRef">
+        <div class="info-row">
+          <span>Mã đơn hàng</span>
+          <strong>#{{ txnRef }}</strong>
+        </div>
+        <div class="info-row">
+          <span>Trạng thái đơn</span>
+          <strong style="color: #dc2626; font-weight: 700;">Đã hủy</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary-btn" (click)="goToOrders()">Xem đơn hàng</button>
+        <button class="secondary-btn" (click)="goHome()">Về trang chủ</button>
+      </div>
+    </div>
+
+  </div>
+</section>

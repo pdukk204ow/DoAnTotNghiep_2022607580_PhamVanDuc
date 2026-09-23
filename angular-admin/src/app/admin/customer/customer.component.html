@@ -1,0 +1,126 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Quản lý khách hàng</h1>
+            <p class="page-subtitle mb-0">Danh sách tài khoản người dùng và khách hàng đã đăng ký</p>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-card">
+                <!-- Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input matInput type="text" placeholder="Tìm theo tên, email, SĐT..." (keyup)="search($event)" />
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <app-add-customer (saveFinish)="finish()"></app-add-customer>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        
+                        <!-- Avatar -->
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px;">Avatar</th>
+                            <td mat-cell *matCellDef="let row">
+                                <img [src]="row.image" class="user-avatar-thumb" 
+                                     (error)="$any($event.target).src='https://ui-avatars.com/api/?name=' + (row.name || 'User') + '&background=059669&color=fff'">
+                            </td>
+                        </ng-container>
+
+                        <!-- ID -->
+                        <ng-container matColumnDef="userId">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 70px;">ID</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-muted">#{{row.userId}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Họ tên -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 160px;">Họ tên</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="font-weight-bold text-dark">{{row.name}}</div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Email -->
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 180px;">Email</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-secondary">{{row.email}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Địa chỉ -->
+                        <ng-container matColumnDef="address">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 180px;">Địa chỉ</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">{{row.address}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- SĐT -->
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">SĐT</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge badge-light border text-dark">{{row.phone}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Giới tính -->
+                        <ng-container matColumnDef="gender">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 90px;">Giới tính</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge" [ngClass]="row.gender ? 'badge-soft-primary' : 'badge-soft-purple'">
+                                    {{row.gender ? 'Nam' : 'Nữ'}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Ngày đăng ký -->
+                        <ng-container matColumnDef="registerDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 110px;">Ngày ĐK</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">{{row.registerDate|date:'dd/MM/yyyy'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Xem / Sửa -->
+                        <ng-container matColumnDef="view">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px; text-align: center;">Sửa</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <app-edit-customer [id]='row.userId' (editFinish)="finish()"></app-edit-customer>
+                            </td>
+                        </ng-container>
+
+                        <!-- Xoá -->
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px; text-align: center;">Xoá</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <button class="action-btn action-btn-delete" title="Xoá khách hàng" (click)="delete(row.userId, row.name)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <!-- Paginator -->
+                <mat-paginator [length]="customerLength" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

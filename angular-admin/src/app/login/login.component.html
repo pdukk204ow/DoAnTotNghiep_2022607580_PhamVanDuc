@@ -1,0 +1,41 @@
+<div class="login-page-container">
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <div class="login-brand-icon mb-3 mx-auto">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h2 class="login-title">Văn Đức</h2>
+            <p class="login-subtitle">Hệ thống quản trị nhà sách thông minh</p>
+        </div>
+
+        <form class="login-form" [formGroup]="postForm">
+            <div class="form-group mb-3">
+                <label class="login-label">Email đăng nhập</label>
+                <div class="login-input-box">
+                    <span class="login-input-icon"><i class="far fa-envelope"></i></span>
+                    <input type="email" placeholder="admin@vanducstore.com" formControlName="email" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="login-label">Mật khẩu</label>
+                <div class="login-input-box">
+                    <span class="login-input-icon"><i class="fas fa-lock"></i></span>
+                    <input [type]="show ? 'text' : 'password'" placeholder="••••••••" formControlName="password" autocomplete="current-password">
+                    <button type="button" class="btn-toggle-eye" (click)="toggle()" tabindex="-1">
+                        <i class="far" [ngClass]="show ? 'fa-eye' : 'fa-eye-slash'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" class="btn-login-submit" (click)="Login()">
+                <span>Đăng nhập hệ thống</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </form>
+
+        <div class="login-footer text-center mt-4">
+            <small class="text-muted"><i class="fas fa-shield-alt mr-1"></i> Khu vực dành riêng cho quản trị viên</small>
+        </div>
+    </div>
+</div>

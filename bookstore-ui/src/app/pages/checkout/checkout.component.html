@@ -1,0 +1,370 @@
+<section class="checkout-page">
+
+  <div class="container">
+
+    <h1 class="checkout-title">
+      Thanh toán
+    </h1>
+
+    <div class="checkout-wrapper">
+
+      <!-- LEFT -->
+
+      <div class="checkout-form">
+
+        <div class="form-box">
+
+          <h3>
+            Thông tin giao hàng
+          </h3>
+
+          <!-- SAVED ADDRESSES (single / select) -->
+
+          <div
+            *ngIf="!showNewForm && addresses.length > 0"
+            class="address-list"
+          >
+
+            <div
+              class="address-option"
+              *ngFor="let address of addresses"
+              [class.selected]="selectedAddress && selectedAddress.id === address.id"
+              (click)="selectAddress(address)"
+            >
+
+              <div class="address-radio">
+                <span
+                  class="dot"
+                  [class.on]="selectedAddress && selectedAddress.id === address.id"
+                ></span>
+              </div>
+
+              <div class="address-body">
+
+                <div class="address-top">
+                  <strong>{{ address.label }}</strong>
+                  <span *ngIf="address.isDefault" class="badge">
+                    Mặc định
+                  </span>
+                </div>
+
+                <p>{{ address.name }} - {{ address.phone }}</p>
+                <p class="address-street">{{ address.street }}</p>
+
+              </div>
+
+            </div>
+
+            <button class="ghost-btn" (click)="useNewAddress()">
+              + Dùng địa chỉ khác
+            </button>
+
+          </div>
+
+          <!-- NEW ADDRESS FORM -->
+
+          <div *ngIf="showNewForm" class="new-address">
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">Họ và tên người nhận <span class="required">*</span></label>
+                <input
+                  type="text"
+                  placeholder="Ví dụ: Nguyễn Văn A"
+                  [(ngModel)]="shippingForm.name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Số điện thoại <span class="required">*</span></label>
+                <input
+                  type="text"
+                  placeholder="Ví dụ: 0912345678"
+                  [(ngModel)]="shippingForm.phone"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nhãn địa chỉ</label>
+              <input
+                type="text"
+                placeholder="Nhãn gợi nhớ (Nhà riêng, Văn phòng công ty...)"
+                [(ngModel)]="shippingForm.label"
+              />
+            </div>
+
+            <!-- CHỌN ĐỊA CHỈ TỈNH THÀNH / QUẬN HUYỆN / PHƯỜNG XÃ -->
+            <div class="location-group">
+              <label class="form-label">Khu vực giao hàng <span class="required">*</span></label>
+              <div class="location-select-grid">
+                
+                <div class="select-field">
+                  <label class="sub-label">Tỉnh / Thành phố</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedProvinceCode"
+                      (change)="onProvinceChange()"
+                    >
+                      <option value="">-- Chọn Tỉnh / Thành phố --</option>
+                      <option *ngFor="let p of provinces" [value]="p.code">{{ p.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingProvinces">...</span>
+                  </div>
+                </div>
+
+                <div class="select-field">
+                  <label class="sub-label">Quận / Huyện</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedDistrictCode"
+                      (change)="onDistrictChange()"
+                      [disabled]="!selectedProvinceCode || loadingDistricts"
+                    >
+                      <option value="">{{ loadingDistricts ? 'Đang tải...' : '-- Chọn Quận/Huyện --' }}</option>
+                      <option *ngFor="let d of sortedDistricts" [value]="d.code">{{ d.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingDistricts">...</span>
+                  </div>
+                </div>
+
+                <div class="select-field">
+                  <label class="sub-label">Phường / Xã</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedWardCode"
+                      (change)="onWardChange()"
+                      [disabled]="!selectedDistrictCode || loadingWards"
+                    >
+                      <option value="">{{ loadingWards ? 'Đang tải...' : '-- Chọn Phường/Xã --' }}</option>
+                      <option *ngFor="let w of sortedWards" [value]="w.code">{{ w.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingWards">...</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Số nhà, tên đường, toà nhà <span class="required">*</span></label>
+              <input
+                type="text"
+                placeholder="Ví dụ: Số 12 ngõ 34 Cầu Giấy, Tầng 5 toà Vincom..."
+                [(ngModel)]="specificAddress"
+                (input)="onSpecificAddressChange()"
+              />
+            </div>
+
+            <!-- Preview địa chỉ hoàn chỉnh -->
+            <div class="address-preview-card" *ngIf="shippingForm.street">
+              <div class="preview-header">
+                <span class="preview-badge">📍 Địa chỉ nhận hàng dự kiến</span>
+              </div>
+              <p class="preview-address">{{ shippingForm.street }}</p>
+            </div>
+
+            <label class="save-toggle">
+              <input type="checkbox" [(ngModel)]="saveToProfile" />
+              Lưu địa chỉ này vào sổ địa chỉ cá nhân của tôi
+            </label>
+
+            <button
+              *ngIf="addresses.length > 0"
+              class="link-btn"
+              (click)="cancelNewAddress()"
+            >
+              Quay lại danh sách địa chỉ đã lưu
+            </button>
+
+          </div>
+
+          <p *ngIf="formError" class="form-error">
+            {{ formError }}
+          </p>
+
+        </div>
+
+        <!-- PAYMENT METHOD -->
+        <div class="form-box payment-box">
+
+          <h3>
+            Phương thức thanh toán
+          </h3>
+
+          <div class="payment-methods">
+
+            <div
+              class="payment-option"
+              [class.selected]="paymentMethod === 'cod'"
+              (click)="paymentMethod = 'cod'"
+            >
+              <div class="payment-radio">
+                <span class="dot" [class.on]="paymentMethod === 'cod'"></span>
+              </div>
+              <div class="payment-body">
+                <div class="payment-icon">💵</div>
+                <div class="payment-info">
+                  <strong>Thanh toán khi nhận hàng (COD)</strong>
+                  <p>Thanh toán bằng tiền mặt khi nhận hàng</p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="payment-option"
+              [class.selected]="paymentMethod === 'vnpay'"
+              (click)="paymentMethod = 'vnpay'"
+            >
+              <div class="payment-radio">
+                <span class="dot" [class.on]="paymentMethod === 'vnpay'"></span>
+              </div>
+              <div class="payment-body">
+                <div class="payment-icon">💳</div>
+                <div class="payment-info">
+                  <strong>Thanh toán online (VNPay)</strong>
+                  <p>ATM / Internet Banking / Visa / MasterCard / QR Code</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="checkout-summary">
+
+        <h3>
+          Đơn hàng
+        </h3>
+
+        <!-- VOUCHER PROMO BOX -->
+        <div class="voucher-box">
+          <div class="voucher-header">
+            <span class="voucher-icon">🎟️</span>
+            <strong>Phiếu giảm giá</strong>
+          </div>
+
+          <!-- Input form when not applied -->
+          <div class="voucher-input-group" *ngIf="!appliedVoucher">
+            <input
+              type="text"
+              class="voucher-input"
+              placeholder="Nhập mã ưu đãi..."
+              [(ngModel)]="voucherCode"
+              (keyup.enter)="applyVoucher()"
+            />
+            <button
+              type="button"
+              class="voucher-btn"
+              (click)="applyVoucher()"
+              [disabled]="!voucherCode"
+            >
+              Áp dụng
+            </button>
+          </div>
+
+          <!-- Applied Voucher Card -->
+          <div class="applied-voucher-card" *ngIf="appliedVoucher">
+            <div class="applied-left">
+              <span class="applied-badge">{{ appliedVoucher.code }}</span>
+              <span class="applied-name">{{ appliedVoucher.name }}</span>
+            </div>
+            <button class="applied-remove" (click)="removeVoucher()" title="Bỏ mã ưu đãi">
+              ✕
+            </button>
+          </div>
+
+          <!-- Feedback messages -->
+          <p class="voucher-msg error" *ngIf="voucherError">{{ voucherError }}</p>
+          <p class="voucher-msg success" *ngIf="voucherSuccess">{{ voucherSuccess }}</p>
+
+          <!-- Quick Suggestion Tags -->
+          <div class="voucher-suggestions" *ngIf="!appliedVoucher">
+            <span class="sugg-label">Gợi ý mã:</span>
+            <div class="sugg-tags">
+              <button
+                type="button"
+                class="sugg-tag"
+                *ngFor="let v of availableVouchers"
+                (click)="quickApply(v.code)"
+                [title]="v.name"
+              >
+                {{ v.code }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+
+          <span>
+            Tạm tính
+          </span>
+
+          <strong>
+            {{ getSubtotal() | number }}đ
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Phí vận chuyển
+          </span>
+
+          <strong>
+            {{ getShipping() | number }}đ
+          </strong>
+
+        </div>
+
+        <div class="summary-row discount-row" *ngIf="appliedVoucher">
+
+          <span class="text-emerald">
+            Giảm giá ({{ appliedVoucher.code }})
+          </span>
+
+          <strong class="text-emerald">
+            -{{ getDiscount() | number }}đ
+          </strong>
+
+        </div>
+
+        <div class="summary-total">
+
+          <span>
+            Tổng cộng
+          </span>
+
+          <strong>
+            {{ getTotal() | number }}đ
+          </strong>
+
+        </div>
+
+        <button
+          class="place-order-btn"
+          (click)="placeOrder()"
+          [disabled]="placing"
+        >
+          {{ placing ? 'Đang xử lý...' : (paymentMethod === 'vnpay' ? 'Thanh toán với VNPay' : 'Đặt hàng') }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

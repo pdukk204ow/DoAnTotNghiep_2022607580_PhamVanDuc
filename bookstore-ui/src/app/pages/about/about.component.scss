@@ -1,0 +1,175 @@
+.about-page {
+  background: white;
+}
+
+.container {
+  width: 92%;
+  max-width: 1100px;
+  margin: auto;
+
+  &.narrow {
+    max-width: 760px;
+  }
+}
+
+/* ===== HERO ===== */
+
+.hero {
+  background: linear-gradient(135deg, #0f5c3f, #1e7a52);
+  color: white;
+  text-align: center;
+  padding: 70px 0;
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+  }
+
+  .tagline {
+    font-size: 1.15rem;
+    opacity: 0.9;
+  }
+}
+
+/* ===== SECTIONS ===== */
+
+.section {
+  padding: 60px 0;
+
+  &.alt {
+    background: #f0fdf4;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    color: #1e5631;
+    margin-bottom: 20px;
+
+    &.center {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #374151;
+    margin-bottom: 14px;
+  }
+}
+
+/* ===== MISSION / VISION ===== */
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.mission-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  .icon {
+    font-size: 34px;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    color: #0f5c3f;
+    margin-bottom: 10px;
+  }
+}
+
+/* ===== REASONS ===== */
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.reason-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 26px 20px;
+  text-align: center;
+  transition: 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #0f5c3f;
+    box-shadow: 0 8px 20px rgba(15, 92, 63, 0.12);
+  }
+
+  .icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+/* ===== STATS ===== */
+
+.stats {
+  background: #0f5c3f;
+  color: white;
+  padding: 50px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.6rem;
+  font-weight: 800;
+}
+
+.stat-label {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin-top: 6px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .mission-grid,
+  .reasons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+}

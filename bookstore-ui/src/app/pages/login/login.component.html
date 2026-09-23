@@ -1,0 +1,52 @@
+<section class="auth-page">
+
+  <div class="auth-box">
+
+    <h1>
+      Đăng nhập
+    </h1>
+
+    <p>
+      Chào mừng quay trở lại 👋
+    </p>
+
+    <div class="form-group">
+
+      <input
+        type="text"
+       placeholder="Email"
+        [(ngModel)]="email"
+      />
+
+    </div>
+
+    <div class="form-group">
+
+      <input
+        type="password"
+        placeholder="Mật khẩu"
+        [(ngModel)]="password"
+      />
+
+    </div>
+
+    <button
+      class="auth-btn"
+      (click)="login()"
+    >
+      Đăng nhập
+    </button>
+
+    <div class="auth-link">
+
+      Chưa có tài khoản?
+
+      <a routerLink="/register">
+        Đăng ký
+      </a>
+
+    </div>
+
+  </div>
+
+</section>

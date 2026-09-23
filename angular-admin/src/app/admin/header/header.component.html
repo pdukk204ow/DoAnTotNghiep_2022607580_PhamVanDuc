@@ -1,0 +1,105 @@
+<nav class="navbar navbar-expand navbar-light topbar-modern mb-4 static-top">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-sidebar-toggle d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Welcome Breadcrumb / Greeting -->
+    <div class="d-none d-sm-flex align-items-center">
+        <span class="topbar-welcome">Xin chào, <strong>{{name || 'Admin'}}</strong></span>
+    </div>
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto align-items-center">
+
+        <!-- Thông báo (Alerts) -->
+        <li class="nav-item dropdown no-arrow mx-2">
+            <a class="nav-link topbar-icon-btn" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" title="Thông báo">
+                <i class="fas fa-bell"></i>
+                <!-- Counter Badge -->
+                <span *ngIf="getNotificationFalse() > 0" class="badge-notification-count">
+                    {{getNotificationFalse() > 99 ? '99+' : getNotificationFalse()}}
+                </span>
+            </a>
+            <!-- Dropdown - Alerts -->
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-dropdown animated--grow-in"
+                aria-labelledby="alertsDropdown">
+                <div class="dropdown-header-custom d-flex justify-content-between align-items-center">
+                    <span class="dropdown-header-title"><i class="fas fa-bell mr-2 text-primary"></i>Thông báo</span>
+                    <span *ngIf="getNotificationFalse() > 0" class="badge badge-soft-primary">{{getNotificationFalse()}} mới</span>
+                </div>
+                <div class="notification-list-scroll">
+                    <div *ngIf="!notifications || notifications.length === 0" class="p-4 text-center text-muted small">
+                        <i class="far fa-bell-slash fa-2x mb-2 text-gray-400"></i>
+                        <p class="m-0">Không có thông báo mới</p>
+                    </div>
+                    <div *ngFor="let item of notifications">
+                        <a class="dropdown-item notification-item d-flex align-items-start" 
+                           (click)="readed(item.id)" 
+                           [routerLink]="['/admin/order']" 
+                           [class.notification-unread]="!item.status">
+                            <div class="notification-icon-box mr-3">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-message">{{item.message}}</div>
+                                <div class="notification-time">{{item.time | date:'HH:mm - dd/MM/yyyy'}}</div>
+                            </div>
+                            <span *ngIf="!item.status" class="unread-dot ml-auto"></span>
+                        </a>
+                    </div>
+                </div>                
+                <div class="dropdown-footer-custom text-center">
+                    <a class="btn-mark-all-read" (click)="readAll()">
+                        <i class="fas fa-check-double mr-1"></i> Đánh dấu đã đọc tất cả
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Hòm thư / Email Quick Link -->
+        <li class="nav-item mx-1">
+            <a class="nav-link topbar-icon-btn" href="https://mail.google.com/" target="_blank" title="Mở Gmail">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </li>
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <!-- User Information -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link user-profile-chip" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <div class="user-avatar-wrapper mr-2">
+                    <img class="img-profile rounded-circle" [src]="image || 'assets/sb-admin-2.min.css'" (error)="$any($event.target).src='https://ui-avatars.com/api/?name=' + (name || 'Admin') + '&background=059669&color=fff'">
+                    <span class="user-status-indicator"></span>
+                </div>
+                <div class="d-none d-lg-flex flex-column text-left">
+                    <span class="user-name">{{name || 'Quản trị viên'}}</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+                <i class="fas fa-chevron-down user-chevron d-none d-lg-inline ml-2"></i>
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow-dropdown animated--grow-in user-dropdown-menu" aria-labelledby="userDropdown">
+                <div class="dropdown-user-header d-flex align-items-center p-3">
+                    <img class="rounded-circle mr-3" style="width: 44px; height: 44px; object-fit: cover;" [src]="image" (error)="$any($event.target).src='https://ui-avatars.com/api/?name=' + (name || 'Admin') + '&background=059669&color=fff'">
+                    <div>
+                        <div class="font-weight-bold text-dark">{{name}}</div>
+                        <div class="small text-muted">Admin System</div>
+                    </div>
+                </div>
+                <div class="dropdown-divider m-0"></div>
+                <app-profile (editFinish)="finish()"></app-profile>
+                <div class="dropdown-divider m-0"></div>
+                <a class="dropdown-item dropdown-logout-btn" (click)="logOut()">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i> Đăng xuất
+                </a>
+            </div>
+        </li>
+
+    </ul>
+
+</nav>

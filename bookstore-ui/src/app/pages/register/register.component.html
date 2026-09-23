@@ -1,0 +1,100 @@
+<section class="auth-page">
+
+  <div class="auth-box">
+
+    <h1>
+      Đăng ký
+    </h1>
+
+    <p>
+      Tạo tài khoản mới 😄
+    </p>
+
+    <!-- NAME -->
+
+    <div class="form-group">
+
+      <input
+        type="text"
+        placeholder="Họ và tên"
+        [(ngModel)]="name"
+      />
+
+    </div>
+
+    <!-- EMAIL -->
+
+    <div class="form-group">
+
+      <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="email"
+      />
+
+    </div>
+
+    <!-- PHONE -->
+
+    <div class="form-group">
+
+      <input
+        type="text"
+        placeholder="Số điện thoại"
+        [(ngModel)]="phone"
+      />
+
+    </div>
+
+    <!-- PASSWORD -->
+
+    <div class="form-group">
+
+      <input
+        type="password"
+        placeholder="Mật khẩu"
+        [(ngModel)]="password"
+      />
+
+    </div>
+
+    <!-- CONFIRM PASSWORD -->
+
+    <div class="form-group">
+
+      <input
+        type="password"
+        placeholder="Nhập lại mật khẩu"
+        [(ngModel)]="confirmPassword"
+      />
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <p *ngIf="errorMessage" class="auth-error">
+      {{ errorMessage }}
+    </p>
+
+    <button
+      class="auth-btn"
+      (click)="register()"
+    >
+      Đăng ký
+    </button>
+
+    <!-- LINK -->
+
+    <div class="auth-link">
+
+      Đã có tài khoản?
+
+      <a routerLink="/login">
+        Đăng nhập
+      </a>
+
+    </div>
+
+  </div>
+
+</section>

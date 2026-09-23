@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.rating-stars-wrapper {
+  color: #f59e0b;
+  font-size: 0.95rem;
+}
+
+.star-custom {
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  color: #e2e8f0;
+}
+
+.star-custom.full {
+  color: #f59e0b;
+}
+
+.star-custom .half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #f59e0b;
+  top: 0;
+  left: 0;
+}

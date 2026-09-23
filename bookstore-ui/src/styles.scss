@@ -1,0 +1,313 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Inter', sans-serif;
+
+  background: #f3f4f6;
+
+  color: #111827;
+
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+.container {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-top: 32px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #0f5c3f;
+  outline-offset: 2px;
+}
+
+/* =========================
+   SKELETON LOADING
+   (dùng chung: home / books / search / category)
+========================= */
+
+.skeleton-row {
+  display: flex;
+  gap: 24px;
+  overflow: hidden;
+}
+
+.skeleton-card {
+  width: 195px;
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid #f1f5f9;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+/* Trong grid (books/search/category) thẻ skeleton co giãn theo cột */
+.products-grid .skeleton-card,
+.search-grid .skeleton-card {
+  width: auto;
+}
+
+.skeleton-box {
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+.skeleton-cover {
+  height: 210px;
+}
+
+.skeleton-line {
+  height: 16px;
+  margin-top: 14px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* =========================
+   API ERROR PANEL
+========================= */
+
+.load-error {
+  text-align: center;
+  padding: 48px 24px;
+  background: white;
+  border-radius: 18px;
+  border: 1px dashed #d1d5db;
+  color: #6b7280;
+}
+
+.load-error p {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.retry-btn {
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 10px;
+  background: #0f5c3f;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.retry-btn:hover {
+  background: #0b4d29;
+}
+/* ============================================================
+   GLOBAL VIETNAM LOCATION SELECTOR & FORM STYLES
+   ============================================================ */
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: #dc2626;
+}
+
+.sub-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.location-group {
+  margin-bottom: 20px;
+}
+
+.location-select-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .location-select-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-select {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  padding: 0 14px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #1f2937;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: auto;
+}
+
+.form-select:focus {
+  border-color: #0f6b3a;
+  box-shadow: 0 0 0 3px rgba(15, 107, 58, 0.12);
+}
+
+.form-select:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+.loading-spin {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  color: #0f6b3a;
+  pointer-events: none;
+}
+
+.address-preview-card {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.25s ease;
+}
+
+.preview-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+  letter-spacing: 0.02em;
+}
+
+.preview-address {
+  margin: 6px 0 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #166534;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   ORDER STATUS BADGE STYLES
+   ============================================================ */
+.status.status-0 {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+}
+.status.status-1 {
+  background: #fef3c7 !important;
+  color: #b45309 !important;
+}
+.status.status-2 {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+.status.status-3 {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+}
+
+
+/* =========================
+   LUCIDE ICON & CART ALIGNMENT FIX
+========================= */
+lucide-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  vertical-align: middle;
+
+  svg {
+    display: block;
+  }
+}
+
+.add-cart-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+
+  lucide-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 0 !important;
+
+    svg {
+      width: 16px !important;
+      height: 16px !important;
+      max-width: 16px !important;
+      max-height: 16px !important;
+      display: block !important;
+      margin: auto !important;
+    }
+  }
+}

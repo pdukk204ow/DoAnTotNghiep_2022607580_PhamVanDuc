@@ -1,0 +1,92 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Sách bán chạy nhất</h1>
+            <p class="page-subtitle mb-0">Thống kê top những đầu sách có lượt mua cao nhất</p>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-fire text-danger mr-1"></i> Bảng xếp hạng bán chạy
+                    </h2>
+                </div>
+
+                <div class="table-responsive table-scroll-container">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        <!-- Ảnh bìa -->
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef style="width: 60px;">Ảnh</th>
+                            <td mat-cell *matCellDef="let row">
+                                <img [src]="row.image" class="book-cover-thumb"
+                                     (error)="$any($event.target).src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2260%22 fill=%22%23f1f5f9%22><rect width=%2244%22 height=%2260%22 rx=%224%22/><text x=%2250%%22 y=%2250%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2210%22>Sách</text></svg>'">
+                            </td>
+                        </ng-container>
+
+                        <!-- Mã sản phẩm -->
+                        <ng-container matColumnDef="productId">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 70px;">Mã</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-muted">#{{row.productId}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tên sách -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 140px;">Tên sách</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-dark">{{row.name}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Đã bán -->
+                        <ng-container matColumnDef="sold">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 110px; text-align: center;">Đã bán</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <span class="badge badge-soft-emerald font-weight-bold px-2 py-1">
+                                    <i class="fas fa-arrow-up mr-1"></i>{{row.sold}} cuốn
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Thể loại -->
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px;">Thể loại</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge badge-light border text-dark">{{row.category?.categoryName}}</span>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <mat-paginator [length]="productsLength" showFirstLastButtons [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+                </mat-paginator>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="admin-card h-100 sticky-chart-card">
+                <div class="admin-card-header d-flex justify-content-between align-items-center">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-chart-bar text-primary mr-1"></i> Biểu đồ số lượng bán ra (Top 10)
+                    </h2>
+                    <span class="small text-muted">Xếp hạng theo số lượng</span>
+                </div>
+                <div class="admin-card-body">
+                    <div id="divChart" style="width: 100%; height: 420px; position: relative;">
+                        <canvas id="chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

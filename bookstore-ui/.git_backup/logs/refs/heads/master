@@ -1,0 +1,4 @@
+0000000000000000000000000000000000000000 d966451e01bff471900646c51ea0d49521d2fb29 hiep1607 <tonghiep1607@gmail.com> 1779813296 +0700	commit (initial): initial commit
+d966451e01bff471900646c51ea0d49521d2fb29 2e63cca1197979508fca9a62d6592d828f4977a3 hiep1607 <tonghiep1607@gmail.com> 1781217405 +0700	commit: Add category navigation + refactor reviews to backend
+2e63cca1197979508fca9a62d6592d828f4977a3 51c2e1de3bba613f6b99e40456174a28d43d4a7b hiep1607 <tonghiep1607@gmail.com> 1781218045 +0700	commit: Refactor header navigation: replace category duplication with dropdown
+51c2e1de3bba613f6b99e40456174a28d43d4a7b 74ded50f16ca4759d368f3208fc98650450ca282 hiep1607 <tonghiep1607@gmail.com> 1781249749 +0700	commit: Implement full navbar navigation + fix category dropdown UX

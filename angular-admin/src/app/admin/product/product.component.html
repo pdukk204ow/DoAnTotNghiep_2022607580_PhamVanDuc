@@ -1,0 +1,130 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Quản lý sách</h1>
+            <p class="page-subtitle mb-0">Danh sách các đầu sách, tác giả, giá bán và thể loại trong kho</p>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-12">
+            
+            <div class="admin-card">
+                <!-- Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm tên sách, tác giả..." (keyup)="search($event)" />
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <app-add-product (saveFinish)="finish()"></app-add-product>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        
+                        <!-- Ảnh bìa -->
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px;">Ảnh</th>
+                            <td mat-cell *matCellDef="let row">
+                                <img [src]="row.image" class="book-cover-thumb" (error)="onImgError($event)" [alt]="row.name">
+                            </td>
+                        </ng-container>
+
+                        <!-- Mã sản phẩm -->
+                        <ng-container matColumnDef="productId">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 65px;">Mã</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-muted">#{{row.productId}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tên sách -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 170px;">Tên sách</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="font-weight-bold text-dark">{{row.name}}</div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tác giả -->
+                        <ng-container matColumnDef="author">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">Tác giả</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-secondary">{{row.author || '—'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Giá bán -->
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 105px;">Giá bán</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-dark">{{row.price|currency:'VND'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Giảm giá -->
+                        <ng-container matColumnDef="discount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 80px;">Giảm giá</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span *ngIf="row.discount > 0" class="badge badge-soft-danger px-2 py-1 font-weight-bold">
+                                    -{{row.discount}}%
+                                </span>
+                                <span *ngIf="!row.discount || row.discount === 0" class="text-muted">0%</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Loại hàng / Thể loại -->
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px;">Thể loại</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge badge-light border text-dark px-2 py-1">
+                                    {{row.category?.categoryName || 'Chung'}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Ngày thêm -->
+                        <ng-container matColumnDef="enteredDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 95px;">Ngày thêm</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">{{row.enteredDate|date:'dd/MM/yyyy'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Sửa -->
+                        <ng-container matColumnDef="view">
+                            <th mat-header-cell *matHeaderCellDef style="width: 45px; text-align: center;">Sửa</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <app-edit-product [id]="row.productId" (editFinish)="finish()"></app-edit-product>
+                            </td>
+                        </ng-container>
+
+                        <!-- Xoá -->
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef style="width: 45px; text-align: center;">Xoá</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <button class="action-btn action-btn-delete" title="Xoá sách" (click)="delete(row.productId, row.name)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <!-- Paginator -->
+                <mat-paginator [length]="productsLength" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]">
+                </mat-paginator>
+            </div>
+
+        </div>
+    </div>
+</div>

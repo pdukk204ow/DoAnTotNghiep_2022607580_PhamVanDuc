@@ -1,0 +1,99 @@
+<ul class="navbar-nav admin-sidebar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-start px-3" [routerLink]="['/admin/dashboard']">
+        <div class="brand-logo-icon">
+            <i class="fas fa-book-open"></i>
+        </div>
+        <div class="sidebar-brand-text d-flex flex-column ml-2">
+            <span class="brand-name">Văn Đức</span>
+            <span class="brand-badge">MANAGEMENT</span>
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <div class="sidebar-divider-wrapper">
+        <hr class="sidebar-divider my-2">
+    </div>
+
+    <!-- Tổng quan -->
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='dashboard'">
+        <a class="nav-link" [routerLink]="['/admin/dashboard']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-th-large"></i></span>
+            <span class="nav-title">Tổng quan</span>
+        </a>
+    </li>
+
+    <!-- Nhóm: Quản lý sách -->
+    <div class="sidebar-heading">
+        Quản lý sách
+    </div>
+
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='product'">
+        <a class="nav-link" [routerLink]="['/admin/product']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-book"></i></span>
+            <span class="nav-title">Sách</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='category'">
+        <a class="nav-link" [routerLink]="['/admin/category']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-tags"></i></span>
+            <span class="nav-title">Thể loại</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='inventory'">
+        <a class="nav-link" [routerLink]="['/admin/inventory']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-boxes"></i></span>
+            <span class="nav-title">Tồn kho</span>
+        </a>
+    </li>
+
+    <!-- Nhóm: Bán hàng -->
+    <div class="sidebar-heading">
+        Bán hàng
+    </div>
+
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='order'">
+        <a class="nav-link" [routerLink]="['/admin/order']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-shopping-bag"></i></span>
+            <span class="nav-title">Đơn hàng</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='voucher'">
+        <a class="nav-link" [routerLink]="['/admin/voucher']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-ticket-alt"></i></span>
+            <span class="nav-title">Phiếu giảm giá</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='category-best-seller'">
+        <a class="nav-link" [routerLink]="['/admin/statistical-category']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-chart-pie"></i></span>
+            <span class="nav-title">Doanh thu thể loại</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='soldest'">
+        <a class="nav-link" [routerLink]="['/admin/soldest']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-fire"></i></span>
+            <span class="nav-title">Sách bán chạy</span>
+        </a>
+    </li>
+
+    <!-- Nhóm: Khách hàng -->
+    <div class="sidebar-heading">
+        Khách hàng
+    </div>
+
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='customer'">
+        <a class="nav-link" [routerLink]="['/admin/customer']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-users"></i></span>
+            <span class="nav-title">Tài khoản</span>
+        </a>
+    </li>
+    <li class="nav-item" routerLinkActive="active" [class.active]="pageActive=='rate'">
+        <a class="nav-link" [routerLink]="['/admin/rate']">
+            <span class="nav-icon-box"><i class="fas fa-fw fa-star"></i></span>
+            <span class="nav-title">Đánh giá</span>
+        </a>
+    </li>
+
+</ul>

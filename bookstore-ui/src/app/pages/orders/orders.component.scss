@@ -1,0 +1,193 @@
+.orders-page {
+  padding: 50px 0;
+}
+
+.container {
+  width: 92%;
+
+  margin: auto;
+}
+
+.orders-title {
+  font-size: 42px;
+
+  font-weight: 800;
+
+  margin-bottom: 36px;
+}
+
+.order-card {
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 28px;
+
+  margin-bottom: 28px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+/* TOP */
+
+.order-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.order-top h3 {
+  font-size: 24px;
+
+  margin-bottom: 8px;
+}
+
+.order-top p {
+  color: #6b7280;
+}
+
+.status {
+  background: #dcfce7;
+
+  color: #166534;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+/* PRODUCT */
+
+.order-product {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 18px 0;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+.order-product img {
+  width: 70px;
+
+  height: 90px;
+
+  object-fit: cover;
+
+  border-radius: 12px;
+}
+
+.order-product h4 {
+  font-size: 18px;
+
+  margin-bottom: 8px;
+}
+
+.order-product p {
+  color: #6b7280;
+}
+
+/* SHIPPING */
+
+.order-shipping {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.shipping-label {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.shipping-info strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.shipping-info p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* TOTAL */
+
+.order-total {
+  margin-top: 24px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #e5e7eb;
+
+  text-align: right;
+
+  font-size: 22px;
+
+  font-weight: 700;
+}
+
+.order-total strong {
+  color: #0f6b3a;
+}
+/* STATUS COLORS */
+
+.status-0 {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-1 {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-2 {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-3 {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* CANCEL BUTTON */
+
+.order-actions {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-cancel {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}

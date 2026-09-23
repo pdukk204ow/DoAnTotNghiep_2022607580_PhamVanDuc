@@ -1,0 +1,520 @@
+<section class="profile-page">
+
+  <div class="container">
+
+    <!-- HEADER -->
+
+    <div class="user-header">
+
+      <div class="user-avatar">
+
+        <img
+          *ngIf="previewAvatar"
+          [src]="previewAvatar"
+          alt="avatar"
+        />
+
+        <span *ngIf="!previewAvatar">
+          {{ authService.currentUser.name[0] }}
+        </span>
+
+      </div>
+
+      <div class="user-meta">
+
+        <h1>
+          {{ authService.currentUser.name }}
+        </h1>
+
+        <p>
+          Thành viên Văn Đức 😄
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- BODY -->
+
+    <div class="user-center">
+
+      <!-- SIDEBAR -->
+
+      <aside class="user-sidebar">
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'info'"
+          (click)="setTab('info')"
+        >
+          Thông tin cá nhân
+        </button>
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'avatar'"
+          (click)="setTab('avatar')"
+        >
+          Ảnh đại diện
+        </button>
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'address'"
+          (click)="setTab('address')"
+        >
+          Địa chỉ giao hàng
+        </button>
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'password'"
+          (click)="setTab('password')"
+        >
+          Đổi mật khẩu
+        </button>
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'stats'"
+          (click)="setTab('stats')"
+        >
+          Thống kê tài khoản
+        </button>
+
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'orders'"
+          (click)="setTab('orders')"
+        >
+          Đơn hàng gần đây
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        <button
+          class="tab-btn logout"
+          (click)="logout()"
+        >
+          Đăng xuất
+        </button>
+
+      </aside>
+
+      <!-- CONTENT -->
+
+      <div class="user-content">
+
+        <!-- ===== PERSONAL INFO ===== -->
+
+        <div *ngIf="activeTab === 'info'" class="panel">
+
+          <h2>Thông tin cá nhân</h2>
+
+          <div class="field">
+            <label>Họ và tên</label>
+            <input
+              type="text"
+              [(ngModel)]="editName"
+              placeholder="Họ và tên"
+            />
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input
+              type="text"
+              [value]="authService.currentUser.email"
+              disabled
+            />
+            <small>Email dùng để đăng nhập và không thể thay đổi.</small>
+          </div>
+
+          <div class="field">
+            <label>Số điện thoại</label>
+            <input
+              type="text"
+              [(ngModel)]="editPhone"
+              placeholder="Số điện thoại"
+            />
+          </div>
+
+          <p *ngIf="infoError" class="form-error">
+            {{ infoError }}
+          </p>
+
+          <button class="primary-btn" (click)="saveInfo()">
+            Lưu thay đổi
+          </button>
+
+        </div>
+
+        <!-- ===== AVATAR ===== -->
+
+        <div *ngIf="activeTab === 'avatar'" class="panel">
+
+          <h2>Ảnh đại diện</h2>
+
+          <div class="avatar-edit">
+
+            <div class="avatar-preview">
+
+              <img
+                *ngIf="previewAvatar"
+                [src]="previewAvatar"
+                alt="avatar"
+              />
+
+              <span *ngIf="!previewAvatar">
+                {{ authService.currentUser.name[0] }}
+              </span>
+
+            </div>
+
+            <div class="avatar-actions">
+
+              <label class="upload-btn">
+                Chọn ảnh
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="onAvatarSelected($event)"
+                  hidden
+                />
+              </label>
+
+              <button class="primary-btn" (click)="saveAvatar()">
+                Lưu ảnh
+              </button>
+
+              <button
+                *ngIf="previewAvatar"
+                class="ghost-btn"
+                (click)="removeAvatar()"
+              >
+                Xoá ảnh
+              </button>
+
+            </div>
+
+          </div>
+
+          <small>Ảnh được lưu trên trình duyệt của bạn (định dạng base64).</small>
+
+        </div>
+
+        <!-- ===== ADDRESSES ===== -->
+
+        <div *ngIf="activeTab === 'address'" class="panel">
+
+          <div class="panel-head">
+            <h2>Địa chỉ giao hàng</h2>
+            <button
+              *ngIf="!showAddressForm"
+              class="primary-btn small"
+              (click)="openAddAddress()"
+            >
+              + Thêm địa chỉ
+            </button>
+          </div>
+
+          <p *ngIf="addresses.length === 0 && !showAddressForm" class="empty">
+            Bạn chưa có địa chỉ nào.
+          </p>
+
+          <!-- LIST -->
+
+          <div
+            class="address-card"
+            *ngFor="let address of addresses"
+          >
+
+            <div class="address-info">
+
+              <div class="address-top">
+                <strong>{{ address.label }}</strong>
+                <span *ngIf="address.isDefault" class="badge">
+                  Mặc định
+                </span>
+              </div>
+
+              <p>{{ address.name }} — {{ address.phone }}</p>
+              <p class="address-street">{{ address.street }}</p>
+
+            </div>
+
+            <div class="address-actions">
+              <button
+                *ngIf="!address.isDefault"
+                class="link-btn"
+                (click)="setDefaultAddress(address)"
+              >
+                Đặt mặc định
+              </button>
+              <button class="link-btn" (click)="editAddress(address)">
+                Chỉnh sửa
+              </button>
+              <button
+                class="link-btn danger"
+                (click)="deleteAddress(address)"
+              >
+                Xoá
+              </button>
+            </div>
+
+          </div>
+
+          <!-- FORM -->
+
+          <div *ngIf="showAddressForm" class="address-form">
+
+            <h3>
+              {{ editingAddressId ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới' }}
+            </h3>
+
+            <div class="field">
+              <label>Nhãn (Nhà riêng, Văn phòng...)</label>
+              <input
+                type="text"
+                [(ngModel)]="addressForm.label"
+                placeholder="Nhà riêng"
+              />
+            </div>
+
+            <div class="field">
+              <label>Người nhận</label>
+              <input
+                type="text"
+                [(ngModel)]="addressForm.name"
+                placeholder="Họ và tên người nhận"
+              />
+            </div>
+
+            <div class="field">
+              <label>Số điện thoại</label>
+              <input
+                type="text"
+                [(ngModel)]="addressForm.phone"
+                placeholder="Số điện thoại"
+              />
+            </div>
+
+            <!-- CHỌN ĐỊA CHỈ TỈNH THÀNH / QUẬN HUYỆN / PHƯỜNG XÃ -->
+            <div class="location-group">
+              <label class="form-label">Khu vực (Tỉnh thành / Quận huyện / Phường xã)</label>
+              <div class="location-select-grid">
+                
+                <div class="select-field">
+                  <label class="sub-label">Tỉnh / Thành phố</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedProvinceCode"
+                      (change)="onProvinceChange()"
+                    >
+                      <option value="">-- Chọn Tỉnh / Thành phố --</option>
+                      <option *ngFor="let p of provinces" [value]="p.code">{{ p.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingProvinces">...</span>
+                  </div>
+                </div>
+
+                <div class="select-field">
+                  <label class="sub-label">Quận / Huyện</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedDistrictCode"
+                      (change)="onDistrictChange()"
+                      [disabled]="!selectedProvinceCode || loadingDistricts"
+                    >
+                      <option value="">{{ loadingDistricts ? 'Đang tải...' : '-- Chọn Quận/Huyện --' }}</option>
+                      <option *ngFor="let d of sortedDistricts" [value]="d.code">{{ d.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingDistricts">...</span>
+                  </div>
+                </div>
+
+                <div class="select-field">
+                  <label class="sub-label">Phường / Xã</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="form-select"
+                      [(ngModel)]="selectedWardCode"
+                      (change)="onWardChange()"
+                      [disabled]="!selectedDistrictCode || loadingWards"
+                    >
+                      <option value="">{{ loadingWards ? 'Đang tải...' : '-- Chọn Phường/Xã --' }}</option>
+                      <option *ngFor="let w of sortedWards" [value]="w.code">{{ w.name }}</option>
+                    </select>
+                    <span class="loading-spin" *ngIf="loadingWards">...</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Số nhà, tên đường cụ thể <span class="required">*</span></label>
+              <input
+                type="text"
+                [(ngModel)]="specificAddress"
+                (input)="onSpecificAddressChange()"
+                placeholder="Ví dụ: Số 12 ngõ 34 Cầu Giấy..."
+              />
+            </div>
+
+            <!-- Preview địa chỉ đầy đủ -->
+            <div class="address-preview-card" *ngIf="addressForm.street">
+              <div class="preview-header">
+                <span class="preview-badge">📍 Địa chỉ đầy đủ:</span>
+              </div>
+              <p class="preview-address">{{ addressForm.street }}</p>
+            </div>
+
+            <p *ngIf="addressError" class="form-error">
+              {{ addressError }}
+            </p>
+
+            <div class="form-buttons">
+              <button class="primary-btn" (click)="saveAddress()">
+                Lưu địa chỉ
+              </button>
+              <button class="ghost-btn" (click)="cancelAddressForm()">
+                Huỷ
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ===== CHANGE PASSWORD ===== -->
+
+        <div *ngIf="activeTab === 'password'" class="panel">
+
+          <h2>Đổi mật khẩu</h2>
+
+          <div class="field">
+            <label>Mật khẩu hiện tại</label>
+            <input
+              type="password"
+              [(ngModel)]="currentPwd"
+              placeholder="Mật khẩu hiện tại"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <div class="field">
+            <label>Mật khẩu mới</label>
+            <input
+              type="password"
+              [(ngModel)]="newPwd"
+              placeholder="Tối thiểu 6 ký tự"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <div class="field">
+            <label>Xác nhận mật khẩu mới</label>
+            <input
+              type="password"
+              [(ngModel)]="confirmPwd"
+              placeholder="Nhập lại mật khẩu mới"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <p *ngIf="passwordError" class="form-error">
+            {{ passwordError }}
+          </p>
+
+          <button class="primary-btn" (click)="changePassword()">
+            Đổi mật khẩu
+          </button>
+
+        </div>
+
+        <!-- ===== STATISTICS ===== -->
+
+        <div *ngIf="activeTab === 'stats'" class="panel">
+
+          <h2>Thống kê tài khoản</h2>
+
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <span class="stat-label">Tổng đơn hàng</span>
+              <strong class="stat-value">{{ stats.totalOrders }}</strong>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-label">Tổng chi tiêu</span>
+              <strong class="stat-value">
+                {{ stats.totalSpent | number }}đ
+              </strong>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-label">Số đánh giá</span>
+              <strong class="stat-value">{{ stats.totalReviews }}</strong>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-label">Sản phẩm trong giỏ</span>
+              <strong class="stat-value">{{ stats.cartCount }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ===== ORDER SUMMARY ===== -->
+
+        <div *ngIf="activeTab === 'orders'" class="panel">
+
+          <div class="panel-head">
+            <h2>Đơn hàng gần đây</h2>
+            <a routerLink="/orders" class="link-btn">
+              Xem tất cả →
+            </a>
+          </div>
+
+          <p *ngIf="recentOrders.length === 0" class="empty">
+            Bạn chưa có đơn hàng nào.
+          </p>
+
+          <div
+            class="summary-order"
+            *ngFor="let order of recentOrders"
+          >
+
+            <div class="summary-left">
+              <strong>Đơn #{{ order.id }}</strong>
+              <span class="summary-date">
+                {{ order.date | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+
+            <div class="summary-mid">
+              <span class="status" [ngClass]="'status-' + order.statusCode">{{ order.status }}</span>
+              <span class="summary-count">
+                {{ order.items.length }} sản phẩm
+              </span>
+            </div>
+
+            <div class="summary-right">
+              {{ order.total | number }}đ
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

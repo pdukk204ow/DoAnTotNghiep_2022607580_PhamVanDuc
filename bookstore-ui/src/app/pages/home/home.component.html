@@ -1,0 +1,399 @@
+<!-- HERO -->
+
+<section class="hero-section">
+
+  <div class="container">
+
+    <div class="hero-wrapper">
+
+      <!-- LEFT -->
+
+      <div class="hero-content">
+
+        <h1>
+          Thắp sáng đam mê, Khơi nguồn tri thức
+        </h1>
+
+        <p>
+          Hàng ngàn tựa sách chọn lọc đồng hành cùng hành trình của bạn
+        </p>
+
+        <button class="hero-btn" routerLink="/books">
+          Mua ngay
+        </button>
+
+      </div>
+
+      <!-- RIGHT: bìa sách bán chạy lấy từ catalog -->
+
+      <div class="hero-books">
+
+        <button
+          class="slider-arrow left"
+          (click)="slideLeft()"
+          aria-label="Trước"
+        >
+          <lucide-icon name="chevron-left"></lucide-icon>
+        </button>
+
+        <div class="slider-container">
+
+          <div
+            class="books-wrapper"
+            #bookSlider
+          >
+
+            <img
+              *ngFor="let book of heroBooks"
+              [src]="book.image"
+              [alt]="book.name"
+              (click)="goToProduct(book.id)"
+            />
+
+          </div>
+
+        </div>
+
+        <button
+          class="slider-arrow right"
+          (click)="slideRight()"
+          aria-label="Sau"
+        >
+          <lucide-icon name="chevron-right"></lucide-icon>
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SERVICE STRIP -->
+
+<section class="service-section">
+
+  <div class="container">
+
+    <div class="service-wrapper">
+
+      <div class="service-item">
+
+        <div class="icon">
+          <lucide-icon name="truck"></lucide-icon>
+        </div>
+
+        <div>
+          <h4>Giao hàng nhanh</h4>
+          <p>Toàn quốc 24/7</p>
+        </div>
+
+      </div>
+
+      <div class="service-item">
+
+        <div class="icon">
+          <lucide-icon name="shield-check"></lucide-icon>
+        </div>
+
+        <div>
+          <h4>Thanh toán an toàn</h4>
+          <p>Nhiều phương thức</p>
+        </div>
+
+      </div>
+
+      <div class="service-item">
+
+        <div class="icon">
+          <lucide-icon name="refresh-ccw"></lucide-icon>
+        </div>
+
+        <div>
+          <h4>Ưu đãi mỗi ngày</h4>
+          <p>Giảm giá hấp dẫn</p>
+        </div>
+
+      </div>
+
+      <div class="service-item">
+
+        <div class="icon">
+          <lucide-icon name="headphones"></lucide-icon>
+        </div>
+
+        <div>
+          <h4>Hỗ trợ 24/7</h4>
+          <p>Tư vấn nhanh chóng</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- LATEST BOOKS -->
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <h2 class="section-title">
+        Sách mới nhất
+      </h2>
+
+      <a routerLink="/books/new">
+        Xem tất cả
+      </a>
+
+    </div>
+
+    <!-- SKELETON -->
+
+    <div class="skeleton-row" *ngIf="loading">
+      <div class="skeleton-card" *ngFor="let s of skeletonItems">
+        <div class="skeleton-box skeleton-cover"></div>
+        <div class="skeleton-box skeleton-line"></div>
+        <div class="skeleton-box skeleton-line short"></div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+
+    <div class="load-error" *ngIf="loadError">
+      <p>Không tải được danh sách sách. Vui lòng kiểm tra kết nối.</p>
+      <button class="retry-btn" (click)="retry()">Thử lại</button>
+    </div>
+
+    <div class="product-slider-wrapper" *ngIf="!loading && !loadError">
+
+      <button
+        class="product-arrow left"
+        (click)="slideProductsLeft()"
+        aria-label="Trước"
+      >
+        <lucide-icon name="chevron-left"></lucide-icon>
+      </button>
+
+      <div class="product-slider-container">
+
+        <div
+          class="product-row"
+          #productSlider
+        >
+
+          <app-product-card
+            *ngFor="let item of latestBooks"
+            [product]="item"
+          >
+          </app-product-card>
+
+        </div>
+
+      </div>
+
+      <button
+        class="product-arrow right"
+        (click)="slideProductsRight()"
+        aria-label="Sau"
+      >
+        <lucide-icon name="chevron-right"></lucide-icon>
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- BESTSELLER -->
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <h2 class="section-title">
+        Sách bán chạy nhất
+      </h2>
+
+      <a routerLink="/books/bestseller">
+        Xem tất cả
+      </a>
+
+    </div>
+
+    <!-- SKELETON -->
+
+    <div class="skeleton-row" *ngIf="loading">
+      <div class="skeleton-card" *ngFor="let s of skeletonItems">
+        <div class="skeleton-box skeleton-cover"></div>
+        <div class="skeleton-box skeleton-line"></div>
+        <div class="skeleton-box skeleton-line short"></div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+
+    <div class="load-error" *ngIf="loadError">
+      <p>Không tải được danh sách sách. Vui lòng kiểm tra kết nối.</p>
+      <button class="retry-btn" (click)="retry()">Thử lại</button>
+    </div>
+
+    <div class="product-slider-wrapper" *ngIf="!loading && !loadError">
+
+      <button
+        class="product-arrow left"
+        (click)="slideBestSellerLeft()"
+        aria-label="Trước"
+      >
+        <lucide-icon name="chevron-left"></lucide-icon>
+      </button>
+
+      <div class="product-slider-container">
+
+        <div
+          class="product-row"
+          #bestSellerSlider
+        >
+
+          <app-product-card
+            *ngFor="let item of bestSellers"
+            [product]="item"
+          >
+          </app-product-card>
+
+        </div>
+
+      </div>
+
+      <button
+        class="product-arrow right"
+        (click)="slideBestSellerRight()"
+        aria-label="Sau"
+      >
+        <lucide-icon name="chevron-right"></lucide-icon>
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CATEGORY -->
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <h2 class="section-title">
+        Danh mục nổi bật
+      </h2>
+
+    </div>
+
+    <div class="category-wrapper">
+
+      <button
+        *ngFor="let cat of categories"
+        (click)="navigateToCategory(cat.categoryId)"
+      >
+        {{ cat.categoryName }}
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+  <div class="container">
+
+    <div class="footer-top">
+
+      <!-- BRAND -->
+
+      <div class="footer-brand">
+
+        <h2>Văn Đức</h2>
+
+        <p>
+          Nhà sách online hiện đại dành cho người Việt.
+          Khám phá hàng ngàn đầu sách chất lượng mỗi ngày.
+        </p>
+
+      </div>
+
+      <!-- LINKS -->
+
+      <div class="footer-links">
+
+        <div class="footer-column">
+
+          <h4>Khám phá</h4>
+
+          <a routerLink="/">Trang chủ</a>
+
+          <a routerLink="/books/new">Sách mới</a>
+
+          <a routerLink="/books/bestseller">Bestseller</a>
+
+          <a routerLink="/books/sale">Khuyến mãi</a>
+
+        </div>
+
+        <div class="footer-column">
+
+          <h4>Hỗ trợ</h4>
+
+          <a routerLink="/contact">Liên hệ</a>
+
+          <a routerLink="/about">Giới thiệu</a>
+
+          <a routerLink="/orders">Đơn hàng của tôi</a>
+
+          <a routerLink="/profile">Tài khoản</a>
+
+        </div>
+
+        <div class="footer-column">
+
+          <h4>Kết nối</h4>
+
+          <a href="https://www.facebook.com" target="_blank" rel="noopener">Facebook</a>
+
+          <a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
+
+          <a href="https://www.youtube.com" target="_blank" rel="noopener">Youtube</a>
+
+          <a href="https://www.tiktok.com" target="_blank" rel="noopener">Tiktok</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      © 2026 Nhà sách Văn Đức. All rights reserved.
+
+    </div>
+
+  </div>
+
+</footer>

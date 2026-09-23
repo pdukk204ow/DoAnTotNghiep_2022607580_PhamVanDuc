@@ -1,0 +1,485 @@
+// BiÃƒÂ¡Ã‚ÂºÃ‚Â¿n mÃƒÆ’Ã‚Â u sÃƒÂ¡Ã‚ÂºÃ‚Â¯c Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ng bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢
+$primary-color: #3b82f6; // Xanh dÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¡i
+$primary-hover: #2563eb;
+$bg-light: #f3f4f6;
+$border-color: #e5e7eb;
+$text-dark: #1f2937;
+$text-muted: #6b7280;
+
+// NÃƒÆ’Ã‚Âºt trÃƒÆ’Ã‚Â²n nÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i kÃƒÆ’Ã‚Â­ch hoÃƒÂ¡Ã‚ÂºÃ‚Â¡t Chat (FAB)
+.ai-chat-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary-color, #1d4ed8);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  }
+
+  &.active {
+    transform: rotate(90deg);
+    background: #ef4444; // Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i sang mÃƒÆ’Ã‚Â u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â khi mÃƒÂ¡Ã‚Â»Ã…Â¸
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+  }
+
+  .fab-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  // HiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u ÃƒÂ¡Ã‚Â»Ã‚Â©ng nhÃƒÂ¡Ã‚ÂºÃ‚Â¥p nhÃƒÆ’Ã‚Â¡y thu hÃƒÆ’Ã‚Âºt sÃƒÂ¡Ã‚Â»Ã‚Â± chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½
+  .fab-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid $primary-color;
+    animation: fab-pulsing 2s infinite;
+    pointer-events: none;
+  }
+}
+
+// Khung cÃƒÂ¡Ã‚Â»Ã‚Â­a sÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ chat nÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i
+.ai-chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  width: 335px;
+  height: 460px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999;
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚ÂºÃ‚Â§u cÃƒÂ¡Ã‚Â»Ã‚Â­a sÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ chat (Header)
+.chat-header {
+  background: linear-gradient(135deg, $primary-color, #1d4ed8);
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+
+  .ai-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ai-avatar-header {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    .robot-icon {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+
+    .online-indicator {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981; // Xanh lÃƒÆ’Ã‚Â¡ trÃƒÂ¡Ã‚Â»Ã‚Â±c tuyÃƒÂ¡Ã‚ÂºÃ‚Â¿n
+      border: 2px solid #1d4ed8;
+    }
+  }
+
+  .ai-title-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-title {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .ai-status {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .header-action-btn,
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    opacity: 0.85;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .action-icon,
+    .close-icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// ThÃƒÆ’Ã‚Â¢n chÃƒÂ¡Ã‚Â»Ã‚Â©a tin nhÃƒÂ¡Ã‚ÂºÃ‚Â¯n (Body)
+.chat-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(249, 250, 251, 0.6);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+}
+
+// HÃƒÆ’Ã‚Â ng tin nhÃƒÂ¡Ã‚ÂºÃ‚Â¯n
+.message-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 85%;
+  align-self: flex-start;
+
+  &.user-row {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    background: white;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    flex-shrink: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Bong bÃƒÆ’Ã‚Â³ng tin nhÃƒÂ¡Ã‚ÂºÃ‚Â¯n (Bubble)
+.message-bubble {
+  background: white;
+  border: 1px solid $border-color;
+  padding: 7px 11px;
+  border-radius: 4px 16px 16px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.user-bubble {
+    background: linear-gradient(135deg, $primary-color, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 16px 4px 16px 16px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+
+    .message-time {
+      color: rgba(255, 255, 255, 0.7);
+      text-align: right;
+    }
+  }
+
+  .message-content {
+    font-size: 13px;
+    line-height: 1.45;
+    word-break: break-word;
+
+    // Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh dÃƒÂ¡Ã‚ÂºÃ‚Â¡ng Markdown hiÃƒÂ¡Ã‚Â»Ã†â€™n thÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ bÃƒÆ’Ã‚Âªn trong
+    ul {
+      margin: 8px 0;
+      padding-left: 20px;
+      list-style-type: disc;
+      li {
+        margin-bottom: 4px;
+      }
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    // Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh dÃƒÂ¡Ã‚ÂºÃ‚Â¡ng link sÃƒÆ’Ã‚Â¡ch nÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢
+    a.book-link {
+      color: $primary-color;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px dashed $primary-color;
+      padding: 0 2px;
+      transition: all 0.2s;
+
+      .user-bubble & {
+        color: white;
+        border-bottom-color: white;
+      }
+
+      &:hover {
+        color: $primary-hover;
+        background: rgba(59, 130, 246, 0.08);
+        border-bottom-style: solid;
+
+        .user-bubble & {
+          color: white;
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+
+  .message-time {
+    font-size: 10px;
+    color: $text-muted;
+  }
+}
+
+// HiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u ÃƒÂ¡Ã‚Â»Ã‚Â©ng bong bÃƒÆ’Ã‚Â³ng gÃƒÆ’Ã‚Âµ chÃƒÂ¡Ã‚Â»Ã‚Â¯ (Typing Bubble)
+.typing-bubble {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: $text-muted;
+    border-radius: 50%;
+    animation: typing-wave 1.4s infinite ease-in-out both;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+// VÃƒÆ’Ã‚Â¹ng cÃƒÆ’Ã‚Â¡c gÃƒÂ¡Ã‚Â»Ã‚Â£i ÃƒÆ’Ã‚Â½ nhanh (Suggestion Chips)
+.chat-suggestions {
+  padding: 8px 12px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: white;
+  border-top: 1px solid $border-color;
+  flex-shrink: 0;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.3);
+    border-radius: 2px;
+  }
+
+  .suggestion-chip {
+    background: $bg-light;
+    border: 1px solid $border-color;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    color: $text-dark;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.08);
+      border-color: rgba(59, 130, 246, 0.3);
+      color: $primary-color;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// VÃƒÆ’Ã‚Â¹ng chÃƒÆ’Ã‚Â¢n nhÃƒÂ¡Ã‚ÂºÃ‚Â­p tin nhÃƒÂ¡Ã‚ÂºÃ‚Â¯n (Footer)
+.chat-footer {
+  padding: 8px 12px;
+  background: white;
+  border-top: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  input {
+    flex: 1;
+    border: 1px solid $border-color;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: $bg-light;
+
+    &:focus {
+      border-color: $primary-color;
+      background: white;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  .send-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $primary-color;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      background: $bg-light;
+      color: $text-muted;
+      cursor: not-allowed;
+    }
+
+    .send-icon {
+      width: 16px;
+      height: 16px;
+      transform: translate(1px, -0.5px);
+    }
+  }
+}
+
+// Animations
+@keyframes fab-pulsing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes typing-wave {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive thiÃƒÂ¡Ã‚ÂºÃ‚Â¿t kÃƒÂ¡Ã‚ÂºÃ‚Â¿ cho Mobile
+@media (max-width: 576px) {
+  .ai-chat-window {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+  .ai-chat-fab {
+    bottom: 16px;
+    right: 16px;
+    &.active {
+      display: none; // ÃƒÂ¡Ã‚ÂºÃ‚Â¨n FAB khi chat mÃƒÂ¡Ã‚Â»Ã…Â¸ to trÃƒÆ’Ã‚Âªn di Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng
+    }
+  }
+}
+

@@ -1,0 +1,309 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Quản lý phiếu giảm giá</h1>
+            <p class="page-subtitle mb-0">Tạo và theo dõi các chương trình ưu đãi, mã giảm giá cho khách hàng</p>
+        </div>
+        <button class="btn-create-voucher" (click)="openCreateModal(voucherModal)">
+            <span class="btn-icon"><i class="fas fa-plus"></i></span>
+            <span>Tạo mã giảm giá</span>
+        </button>
+    </div>
+
+    <!-- 4 Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3 mb-xl-0">
+            <div class="kpi-card">
+                <div class="kpi-icon-wrapper" style="background-color: #e0f2fe; color: #0284c7;">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-label">Tổng số mã</div>
+                    <div class="kpi-value">{{totalCount}} mã</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3 mb-xl-0">
+            <div class="kpi-card">
+                <div class="kpi-icon-wrapper" style="background-color: #dcfce7; color: #15803d;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-label">Đang hiệu lực</div>
+                    <div class="kpi-value text-success">{{activeCount}} mã</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3 mb-xl-0">
+            <div class="kpi-card">
+                <div class="kpi-icon-wrapper" style="background-color: #fef3c7; color: #b45309;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-label">Lượt đã sử dụng</div>
+                    <div class="kpi-value">{{totalUsedCount}} lượt</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3 mb-xl-0">
+            <div class="kpi-card">
+                <div class="kpi-icon-wrapper" style="background-color: #fee2e2; color: #b91c1c;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-label">Hết hạn / Hết lượt</div>
+                    <div class="kpi-value text-danger">{{expiredCount}} mã</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-card">
+                <!-- Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm theo mã code, tên chương trình..." (keyup)="search($event)" />
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        
+                        <!-- Mã Voucher -->
+                        <ng-container matColumnDef="code">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 140px;">Mã giảm giá</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="voucher-code-chip" (click)="copyCode(row.code)" title="Bấm để sao chép mã">
+                                    <span>{{row.code}}</span>
+                                    <i class="fas fa-copy ml-2 text-muted"></i>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tên chương trình -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 200px;">Chương trình</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="font-weight-bold text-dark">{{row.name}}</div>
+                                <div class="small text-muted" *ngIf="row.discountType === 'PERCENT'">
+                                    Giảm tối đa {{row.maxDiscountAmount | currency:'VND'}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Mức giảm -->
+                        <ng-container matColumnDef="discount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px; text-align: center;">Mức giảm</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <span class="badge" [ngClass]="row.discountType === 'PERCENT' ? 'badge-soft-emerald' : 'badge-soft-primary'">
+                                    <i class="fas fa-tag mr-1"></i>
+                                    {{row.discountType === 'PERCENT' ? (row.discount + '%') : (row.discount | currency:'VND')}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Đơn tối thiểu -->
+                        <ng-container matColumnDef="minOrder">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 140px;">Đơn tối thiểu</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-500 text-secondary">{{row.minOrderAmount | currency:'VND'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tiến độ sử dụng -->
+                        <ng-container matColumnDef="usage">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;">Đã dùng</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span>{{row.usedCount}} / {{row.quantity}}</span>
+                                    <span class="text-muted">{{((row.usedCount / row.quantity) * 100) | number:'1.0-0'}}%</span>
+                                </div>
+                                <div class="progress" style="height: 6px; border-radius: 3px;">
+                                    <div class="progress-bar" 
+                                         [ngClass]="row.usedCount >= row.quantity ? 'bg-danger' : 'bg-success'"
+                                         role="progressbar" 
+                                         [style.width.%]="(row.usedCount / row.quantity) * 100">
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Thời hạn -->
+                        <ng-container matColumnDef="expiry">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px;">Hạn dùng</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">
+                                    <i class="far fa-calendar-alt mr-1"></i>{{row.endDate | date:'dd/MM/yyyy'}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Trạng thái -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px; text-align: center;">Trạng thái</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <span *ngIf="row.status && (row.usedCount < row.quantity)" class="status-pill status-delivered">
+                                    <i class="fas fa-check-circle"></i> Đang áp dụng
+                                </span>
+                                <span *ngIf="!row.status" class="status-pill status-cancelled">
+                                    <i class="fas fa-pause-circle"></i> Tạm dừng
+                                </span>
+                                <span *ngIf="row.status && (row.usedCount >= row.quantity)" class="status-pill status-pending">
+                                    <i class="fas fa-ban"></i> Đã hết lượt
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Thao tác -->
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef style="width: 110px; text-align: center;">Thao tác</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <div class="action-btn-group">
+                                    <!-- Bật / Tắt trạng thái -->
+                                    <button class="action-btn" 
+                                            [title]="row.status ? 'Tạm dừng mã' : 'Kích hoạt mã'"
+                                            [style.color]="row.status ? '#d97706' : '#059669'"
+                                            [style.background-color]="row.status ? 'rgba(217, 119, 6, 0.08)' : 'rgba(5, 150, 105, 0.08)'"
+                                            (click)="toggleStatus(row)">
+                                        <i class="fas" [ngClass]="row.status ? 'fa-pause' : 'fa-play'"></i>
+                                    </button>
+
+                                    <!-- Sửa -->
+                                    <button class="action-btn action-btn-edit" title="Chỉnh sửa mã" (click)="openEditModal(row, voucherModal)">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+
+                                    <!-- Xóa -->
+                                    <button class="action-btn action-btn-delete" title="Xoá mã" (click)="deleteVoucher(row)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <mat-paginator [length]="vouchersLength" showFirstLastButtons [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thêm / Sửa Voucher -->
+<ng-template #voucherModal let-c="close" let-d="dismiss">
+    <div class="modal-header d-flex justify-content-between align-items-center">
+        <h4 class="modal-title m-0 font-weight-bold">
+            <i class="fas fa-ticket-alt text-primary mr-2"></i>
+            {{isEditing ? 'Chỉnh sửa mã giảm giá' : 'Tạo mã giảm giá mới'}}
+        </h4>
+        <button type="button" class="close" aria-label="Đóng" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <form [formGroup]="voucherForm" (ngSubmit)="saveVoucher()">
+        <div class="modal-body">
+            <div class="row">
+                <!-- Mã code & Nút tạo ngẫu nhiên -->
+                <div class="col-md-6 mb-3">
+                    <label>Mã Voucher <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control text-uppercase font-weight-bold" 
+                               placeholder="VD: GIAM20K" formControlName="code">
+                        <div class="input-group-append">
+                            <button type="button" class="btn-generate-code" (click)="generateRandomCode()" title="Tạo mã ngẫu nhiên">
+                                <i class="fas fa-magic mr-1"></i> Tạo ngẫu nhiên
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tên chương trình -->
+                <div class="col-md-6 mb-3">
+                    <label>Tên chương trình khuyến mãi <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="VD: Khuyến mãi mùa tựu trường" formControlName="name">
+                </div>
+
+                <!-- Loại giảm giá -->
+                <div class="col-md-6 mb-3">
+                    <label>Loại giảm giá <span class="text-danger">*</span></label>
+                    <select class="custom-select" formControlName="discountType">
+                        <option value="PERCENT">Theo phần trăm (%)</option>
+                        <option value="FIXED">Số tiền cố định (VNĐ)</option>
+                    </select>
+                </div>
+
+                <!-- Mức giảm -->
+                <div class="col-md-6 mb-3">
+                    <label>
+                        {{voucherForm.get('discountType')?.value === 'PERCENT' ? 'Tỷ lệ giảm (%)' : 'Số tiền giảm (VNĐ)'}} 
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" class="form-control" formControlName="discount">
+                </div>
+
+                <!-- Đơn hàng tối thiểu -->
+                <div class="col-md-6 mb-3">
+                    <label>Giá trị đơn hàng tối thiểu (VNĐ) <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" formControlName="minOrderAmount">
+                </div>
+
+                <!-- Giảm tối đa (áp dụng cho %) -->
+                <div class="col-md-6 mb-3" *ngIf="voucherForm.get('discountType')?.value === 'PERCENT'">
+                    <label>Giảm tối đa (VNĐ)</label>
+                    <input type="number" class="form-control" formControlName="maxDiscountAmount">
+                </div>
+
+                <!-- Số lượng mã phát hành -->
+                <div class="col-md-6 mb-3">
+                    <label>Số lượng phát hành <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" formControlName="quantity">
+                </div>
+
+                <!-- Ngày bắt đầu -->
+                <div class="col-md-6 mb-3">
+                    <label>Ngày bắt đầu <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="startDate">
+                </div>
+
+                <!-- Ngày kết thúc -->
+                <div class="col-md-6 mb-3">
+                    <label>Ngày hết hạn <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="endDate">
+                </div>
+
+                <!-- Trạng thái -->
+                <div class="col-md-6 mb-3 d-flex align-items-center mt-3">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" formControlName="status">
+                        <label class="custom-control-label font-weight-bold" for="customSwitch1">
+                            {{voucherForm.get('status')?.value ? 'Đang kích hoạt' : 'Tạm dừng'}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn-modal-cancel" (click)="d()">Huỷ bỏ</button>
+            <button type="submit" class="btn-create-voucher">
+                <span class="btn-icon"><i class="fas fa-check"></i></span>
+                <span>{{isEditing ? 'Lưu thay đổi' : 'Xác nhận tạo mã'}}</span>
+            </button>
+        </div>
+    </form>
+</ng-template>

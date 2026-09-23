@@ -1,0 +1,115 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Danh sách đơn hàng</h1>
+            <p class="page-subtitle mb-0">Quản lý và theo dõi tiến độ xử lý các đơn hàng của khách</p>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-12">
+            
+            <div class="admin-card">
+                <!-- Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm theo mã HĐ, tên khách, SĐT, địa chỉ..." (keyup)="search($event)" />
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        
+                        <!-- Mã HĐ -->
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 80px;">Mã HĐ</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-dark">#{{row.ordersId}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Khách hàng -->
+                        <ng-container matColumnDef="user">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 150px;">Khách hàng</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="font-weight-bold text-dark">{{row.user?.name || 'Khách vãng lai'}}</div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Địa chỉ -->
+                        <ng-container matColumnDef="address">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 220px;">Địa chỉ nhận hàng</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-secondary small">{{row.address}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- SĐT -->
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;">SĐT</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge badge-light border text-dark font-weight-normal">{{row.phone}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Tổng tiền -->
+                        <ng-container matColumnDef="amount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 130px;">Tổng tiền</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="font-weight-bold text-primary">{{row.amount|currency:'VND'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Ngày đặt -->
+                        <ng-container matColumnDef="orderDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 110px;">Ngày đặt</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">{{row.orderDate|date:'dd/MM/yyyy'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Trạng thái -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 140px;">Trạng thái</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span *ngIf="row.status==0" class="status-pill status-pending">
+                                    <i class="fas fa-clock"></i> Chờ xác nhận
+                                </span>
+                                <span *ngIf="row.status==1" class="status-pill status-shipping">
+                                    <i class="fas fa-shipping-fast"></i> Đang giao
+                                </span>
+                                <span *ngIf="row.status==2" class="status-pill status-delivered">
+                                    <i class="fas fa-check-circle"></i> Đã giao
+                                </span>
+                                <span *ngIf="row.status==3" class="status-pill status-cancelled">
+                                    <i class="fas fa-ban"></i> Đã hủy
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Chi tiết -->
+                        <ng-container matColumnDef="view">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">Chi tiết</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <app-order-detail [orderId]="row.ordersId" (updateFinish)="finish()"></app-order-detail>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <!-- Paginator -->
+                <mat-paginator [length]="orderLength" showFirstLastButtons [pageSize]="12" [pageSizeOptions]="[10, 12, 25, 50, 100]">
+                </mat-paginator>
+            </div>
+
+        </div>
+    </div>
+</div>

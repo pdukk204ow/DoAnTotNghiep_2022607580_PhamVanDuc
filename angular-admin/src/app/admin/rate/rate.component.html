@@ -1,0 +1,100 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="page-title">Quản lý đánh giá</h1>
+            <p class="page-subtitle mb-0">Xem và kiểm duyệt các đánh giá và nhận xét từ khách hàng</p>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-card">
+                <!-- Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input matInput type="text" placeholder="Tìm kiếm theo tên khách, nội dung..." (keyup)="search($event)" />
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                        <ng-container matColumnDef="index">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 60px;">STT</th>
+                            <td mat-cell *matCellDef="let row, let i = index">{{i+1}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 150px;">Khách hàng</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="font-weight-bold text-dark">{{row.user?.name}}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="product">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 90px;">Sản phẩm</th>
+                            <td mat-cell *matCellDef="let row">
+                                <img [src]="row.product?.image" class="book-cover-thumb" [title]='row.product?.name'
+                                     (error)="$any($event.target).src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2260%22 fill=%22%23f1f5f9%22><rect width=%2244%22 height=%2260%22 rx=%224%22/><text x=%2250%%22 y=%2250%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2210%22>Sách</text></svg>'">
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="rating">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 140px;">Điểm số</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="rating-stars-wrapper">
+                                    <ngb-rating [(rate)]="row.rating" [starTemplate]="t" [readonly]="true" [max]="5"
+                                        title="{{row.rating}} sao">
+                                    </ngb-rating>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="comment">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 200px;">Nội dung nhận xét</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-dark">{{row.comment || '—'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="rateDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 110px;">Thời gian</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="text-muted small">{{row.rateDate|date:'dd/MM/yyyy'}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px; text-align: center;">Xoá</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center;">
+                                <button class="action-btn action-btn-delete" title="Xoá đánh giá" (click)="delete(row.id)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    </table>
+                </div>
+
+                <mat-paginator [length]="ratesLength" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- star template -->
+<ng-template #t let-fill="fill">
+    <span class="star-custom" [class.full]="fill === 100">
+        <span class="half" [style.width.%]="fill">
+            <i class="fas fa-star"></i>
+        </span>
+        <i class="fas fa-star"></i>
+    </span>
+</ng-template>

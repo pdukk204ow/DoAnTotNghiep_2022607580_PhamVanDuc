@@ -1,0 +1,163 @@
+<div class="contact-page">
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <h1>Liên hệ với chúng tôi</h1>
+
+      <p class="tagline">Nhà sách Văn Đức luôn sẵn sàng lắng nghe bạn đọc</p>
+
+    </div>
+
+  </section>
+
+  <div class="container">
+
+    <!-- INFO + FORM -->
+
+    <div class="contact-grid">
+
+      <!-- STORE INFO -->
+
+      <div class="info-panel">
+
+        <h2>Nhà sách Văn Đức</h2>
+
+        <div class="info-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>Địa chỉ</strong>
+            <p>123 Nguyễn Văn Cừ, Quận 5, TP. Hồ Chí Minh</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span class="icon">📞</span>
+          <div>
+            <strong>Hotline</strong>
+            <p>1900 6868 (8:00 – 21:00 hằng ngày)</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span class="icon">✉️</span>
+          <div>
+            <strong>Email</strong>
+            <p>hotro&#64;vinabook.vn</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span class="icon">🕐</span>
+          <div>
+            <strong>Giờ mở cửa</strong>
+            <p>Thứ 2 – Chủ nhật: 8:00 – 21:00</p>
+          </div>
+        </div>
+
+        <!-- MAP PLACEHOLDER -->
+
+        <div class="map-placeholder">
+          <span class="map-icon">🗺️</span>
+          <p>Bản đồ Google Maps</p>
+          <small>123 Nguyễn Văn Cừ, Quận 5, TP.HCM</small>
+        </div>
+
+      </div>
+
+      <!-- CONTACT FORM -->
+
+      <div class="form-panel">
+
+        <h2>Gửi lời nhắn</h2>
+
+        <form (ngSubmit)="submit()">
+
+          <div class="field">
+            <label>Họ và tên *</label>
+            <input
+              type="text"
+              [(ngModel)]="form.name"
+              name="name"
+              placeholder="Nguyễn Văn A"
+              [class.invalid]="submitted && !form.name.trim()"
+            />
+          </div>
+
+          <div class="field">
+            <label>Email *</label>
+            <input
+              type="email"
+              [(ngModel)]="form.email"
+              name="email"
+              placeholder="ban&#64;email.com"
+              [class.invalid]="submitted && !form.email.trim()"
+            />
+          </div>
+
+          <div class="field">
+            <label>Tiêu đề</label>
+            <input
+              type="text"
+              [(ngModel)]="form.subject"
+              name="subject"
+              placeholder="Bạn cần hỗ trợ về..."
+            />
+          </div>
+
+          <div class="field">
+            <label>Nội dung *</label>
+            <textarea
+              rows="5"
+              [(ngModel)]="form.message"
+              name="message"
+              placeholder="Viết lời nhắn của bạn..."
+              [class.invalid]="submitted && !form.message.trim()"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            Gửi liên hệ
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- FAQ -->
+
+    <section class="faq-section">
+
+      <h2>Câu hỏi thường gặp</h2>
+
+      <div class="faq-list">
+
+        <div
+          class="faq-item"
+          *ngFor="let faq of faqs"
+          [class.open]="faq.open"
+        >
+
+          <button class="faq-question" (click)="toggleFaq(faq)">
+            {{ faq.q }}
+            <span class="chevron">{{ faq.open ? '−' : '+' }}</span>
+          </button>
+
+          <div class="faq-answer" *ngIf="faq.open">
+            {{ faq.a }}
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

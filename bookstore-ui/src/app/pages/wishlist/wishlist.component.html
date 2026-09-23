@@ -1,0 +1,92 @@
+<section class="wishlist-page">
+
+  <div class="container">
+
+    <div class="page-header">
+
+      <h1>Danh sách yêu thích</h1>
+
+      <span class="count" *ngIf="wishlistProducts.length > 0">
+        {{ wishlistProducts.length }} sản phẩm
+      </span>
+
+    </div>
+
+    <!-- PRODUCT GRID -->
+
+    <div class="wishlist-grid" *ngIf="wishlistProducts.length > 0">
+
+      <div class="wishlist-card" *ngFor="let product of wishlistProducts">
+
+        <!-- IMAGE -->
+
+        <div class="card-image" (click)="goToDetail(product.id)">
+
+          <span class="discount-badge">-{{ product.discount }}%</span>
+
+          <img [src]="product.image" alt="" />
+
+        </div>
+
+        <!-- INFO -->
+
+        <div class="card-info">
+
+          <h3 class="card-title" (click)="goToDetail(product.id)">
+            {{ product.name }}
+          </h3>
+
+          <p class="card-author">{{ product.author }}</p>
+
+          <div class="card-rating" *ngIf="getReviewCount(product.id) > 0">
+            <span class="stars">{{ displayStars(getAvgRating(product.id)) }}</span>
+            <span class="rating-val">{{ getAvgRating(product.id) }}</span>
+            <span class="rating-cnt">({{ getReviewCount(product.id) }})</span>
+          </div>
+
+          <div class="card-rating no-rating" *ngIf="getReviewCount(product.id) === 0">
+            Chưa có đánh giá
+          </div>
+
+          <div class="card-price">
+            <span class="new-price">{{ product.price.toLocaleString('vi-VN') }}đ</span>
+            <span class="old-price">{{ product.oldPrice.toLocaleString('vi-VN') }}đ</span>
+          </div>
+
+          <div class="card-actions">
+
+            <button class="btn-detail" (click)="goToDetail(product.id)">
+              Xem chi tiết
+            </button>
+
+            <button class="btn-remove" (click)="remove(product.id)" title="Xóa khỏi danh sách yêu thích">
+              🗑
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+
+    <div class="empty-state" *ngIf="wishlistProducts.length === 0">
+
+      <div class="empty-icon">♡</div>
+
+      <h2>Chưa có sản phẩm yêu thích</h2>
+
+      <p>Nhấn vào biểu tượng ♡ trên sản phẩm để thêm vào danh sách</p>
+
+      <button class="explore-btn" (click)="goToDetail(1)">
+        Khám phá sách ngay →
+      </button>
+
+    </div>
+
+  </div>
+
+</section>

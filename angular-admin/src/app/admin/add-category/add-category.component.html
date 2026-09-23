@@ -1,0 +1,31 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header d-flex justify-content-between align-items-center">
+        <h4 class="modal-title m-0 font-weight-bold">
+            <i class="fas fa-folder-plus text-primary mr-2"></i>Thêm thể loại sách mới
+        </h4>
+        <button type="button" class="close" aria-label="Đóng" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="postForm">
+            <input type="hidden" formControlName='categoryId'>
+            <input type="hidden" formControlName="status">
+            <div class="form-group mb-3">
+                <label for="categoryName" class="form-label font-weight-600">Tên thể loại sách: <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="categoryName" placeholder="VD: Văn học, Khoa học, Thiếu nhi..." [ngClass]="{'is-invalid':postForm.get('categoryName')?.touched && postForm.get('categoryName')?.invalid}" formControlName='categoryName'>
+                <small class="invalid-feedback">Vui lòng nhập tên thể loại hợp lệ</small>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-light" (click)="d()">Hủy</button>
+        <button type="button" class="btn btn-primary px-4" [disabled]="postForm?.invalid" (click)="save()">
+            <i class="fas fa-plus mr-1"></i> Thêm thể loại
+        </button>
+    </div>
+</ng-template>
+
+<button mat-raised-button color="primary" (click)="open(content)">
+    <i class="fas fa-plus mr-1"></i> Thêm thể loại
+</button>

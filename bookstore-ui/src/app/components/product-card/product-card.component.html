@@ -1,0 +1,80 @@
+<div
+  class="product-card"
+  (click)="goToDetail()"
+>
+
+  <div class="discount-badge" *ngIf="product.discount > 0">
+    -{{ product.discount }}%
+  </div>
+
+  <div class="product-image">
+
+    <img
+      [src]="product.image"
+      [alt]="product.name"
+    />
+
+    <!-- WISHLIST TOGGLE -->
+
+    <button
+      class="wishlist-btn"
+      [class.active]="isWishlisted"
+      (click)="toggleWishlist($event)"
+      [title]="isWishlisted ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'"
+      [attr.aria-label]="isWishlisted ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'"
+    >
+      {{ isWishlisted ? '♥' : '♡' }}
+    </button>
+
+  </div>
+
+  <div class="product-info">
+
+    <h3 class="product-title">
+      {{ product.name }}
+    </h3>
+
+    <p class="product-author">
+      {{ product.author }}
+    </p>
+
+    <div class="product-rating" *ngIf="displayCount > 0">
+
+      <span class="stars">{{ displayStars(displayRating) }}</span>
+
+      <span>
+        ({{ displayCount }} đánh giá)
+      </span>
+
+    </div>
+
+    <div class="product-rating no-rating" *ngIf="displayCount === 0">
+      Chưa có đánh giá
+    </div>
+
+    <div class="product-price">
+
+      <span class="new-price">
+        {{ product.price.toLocaleString('vi-VN') }}đ
+      </span>
+
+      <span class="old-price" *ngIf="product.discount > 0">
+        {{ product.oldPrice.toLocaleString('vi-VN') }}đ
+      </span>
+
+      <!-- ADD TO CART -->
+
+      <button
+        class="add-cart-btn"
+        (click)="addToCart($event)"
+        title="Thêm vào giỏ hàng"
+        aria-label="Thêm vào giỏ hàng"
+      >
+        <lucide-icon name="shopping-cart" [size]="16"></lucide-icon>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

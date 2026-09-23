@@ -1,0 +1,256 @@
+<!-- src/app/components/header/header.component.html -->
+
+<header>
+
+  <!-- TOP HEADER -->
+
+  <div class="top-header">
+
+    <div class="container">
+
+      <div class="header-wrapper">
+
+        <!-- LOGO -->
+
+        <a routerLink="/" class="logo">
+
+          <img src="assets/logo.jpg" alt="" />
+
+          <div class="logo-text">
+            <h2>Văn Đức</h2>
+            <p>Lan tỏa văn hóa đọc</p>
+          </div>
+
+        </a>
+
+        <!-- SEARCH -->
+
+        <div class="search-wrapper" #searchBoxRef>
+
+          <div class="search-box">
+
+            <input
+              type="text"
+              placeholder="Tìm kiếm sách, tác giả, thể loại..."
+              [(ngModel)]="keyword"
+              (input)="onInput()"
+              (focus)="onFocus()"
+              (keydown.enter)="onKeydownEnter()"
+              (keydown.escape)="onKeydownEscape()"
+              autocomplete="off"
+            />
+
+            <button (click)="search()" aria-label="Tìm kiếm">
+              <lucide-icon name="search"></lucide-icon>
+            </button>
+
+          </div>
+
+          <!-- SUGGESTIONS DROPDOWN -->
+
+          <div class="suggestions-dropdown" *ngIf="showSuggestions">
+
+            <!-- RECENT SEARCHES -->
+
+            <div class="dropdown-section" *ngIf="recentSearches.length > 0">
+
+              <div class="section-header">
+                <span class="section-title">
+                  <lucide-icon name="clock"></lucide-icon>
+                  Tìm kiếm gần đây
+                </span>
+                <button class="clear-all-btn" (click)="clearAllHistory($event)">
+                  Xóa tất cả
+                </button>
+              </div>
+
+              <div
+                class="history-item"
+                *ngFor="let query of recentSearches"
+                (click)="selectHistory(query)"
+              >
+                <span class="history-text">{{ query }}</span>
+                <button
+                  class="remove-btn"
+                  (click)="removeHistory(query, $event)"
+                  title="Xóa"
+                  aria-label="Xóa khỏi lịch sử"
+                >
+                  <lucide-icon name="x"></lucide-icon>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- DIVIDER -->
+
+            <div
+              class="dropdown-divider"
+              *ngIf="recentSearches.length > 0 && suggestions.length > 0"
+            ></div>
+
+            <!-- SUGGESTIONS -->
+
+            <div class="dropdown-section" *ngIf="suggestions.length > 0">
+
+              <div class="section-header">
+                <span class="section-title">
+                  <lucide-icon name="search"></lucide-icon>
+                  Gợi ý
+                </span>
+              </div>
+
+              <div
+                class="suggestion-item"
+                *ngFor="let item of suggestions"
+                (click)="selectSuggestion(item)"
+              >
+                <span class="suggestion-icon">
+                  <lucide-icon [name]="typeIcon(item.type)"></lucide-icon>
+                </span>
+                <span class="suggestion-label">{{ item.label }}</span>
+                <span class="suggestion-type">{{ typeLabel(item.type) }}</span>
+              </div>
+
+            </div>
+
+            <!-- EMPTY STATE (focused, no keyword, no history) -->
+
+            <div
+              class="dropdown-empty"
+              *ngIf="recentSearches.length === 0 && suggestions.length === 0"
+            >
+              Nhập từ khóa để tìm kiếm
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ACTIONS -->
+
+        <div class="header-actions">
+
+          <a
+            *ngIf="!authService.isLoggedIn()"
+            routerLink="/login"
+          >
+            Đăng nhập
+          </a>
+
+          <a
+            class="user-box"
+            routerLink="/profile"
+            *ngIf="authService.isLoggedIn()"
+          >
+            <lucide-icon name="user"></lucide-icon>
+            {{ authService.currentUser.name }}
+          </a>
+
+          <!-- WISHLIST -->
+
+          <a
+            routerLink="/wishlist"
+            class="wishlist-icon"
+            *ngIf="authService.isLoggedIn()"
+            title="Danh sách yêu thích"
+            aria-label="Danh sách yêu thích"
+          >
+            <lucide-icon name="heart"></lucide-icon>
+            <span
+              class="wishlist-badge"
+              *ngIf="wishlistService.getCount(authService.currentUser.email) > 0"
+            >
+              {{ wishlistService.getCount(authService.currentUser.email) }}
+            </span>
+          </a>
+
+          <!-- CART -->
+
+          <a routerLink="/cart" class="cart-icon" aria-label="Giỏ hàng">
+            <lucide-icon name="shopping-cart"></lucide-icon>
+            <span
+              class="cart-badge"
+              *ngIf="cartService.getCartCount() > 0"
+            >
+              {{ cartService.getCartCount() }}
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NAVBAR -->
+
+  <div class="navbar">
+
+    <div class="container">
+
+      <div class="navbar-wrapper">
+
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Trang chủ
+        </a>
+
+        <a
+          routerLink="/books"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Sách
+        </a>
+
+        <!-- CATEGORY DROPDOWN -->
+        <div
+          class="category-menu"
+          #categoryMenuRef
+          (mouseenter)="onCategoryHover(true)"
+          (mouseleave)="onCategoryHover(false)"
+        >
+
+          <button
+            class="category-toggle"
+            (click)="toggleCategoryDropdown($event)"
+          >
+            Thể loại
+            <lucide-icon name="chevron-down"></lucide-icon>
+          </button>
+
+          <div class="category-dropdown" [class.open]="showCategoryDropdown">
+            <a
+              *ngFor="let cat of categories"
+              class="category-item"
+              (click)="selectCategory(cat.categoryId)"
+            >
+              {{ cat.categoryName }}
+            </a>
+          </div>
+
+        </div>
+
+        <a routerLink="/books/new" routerLinkActive="active">Sách mới</a>
+
+        <a routerLink="/books/bestseller" routerLinkActive="active">Bestseller</a>
+
+        <a routerLink="/books/sale" routerLinkActive="active">Khuyến mãi</a>
+
+        <a routerLink="/about" routerLinkActive="active">Giới thiệu</a>
+
+        <a routerLink="/contact" routerLinkActive="active">Liên hệ</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>

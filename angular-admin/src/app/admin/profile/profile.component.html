@@ -1,0 +1,72 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header d-flex justify-content-between align-items-center">
+        <h4 class="modal-title m-0 font-weight-bold">
+            <i class="fas fa-id-card text-primary mr-2"></i>Thông tin cá nhân quản trị viên
+        </h4>
+        <button type="button" class="close" aria-label="Đóng" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="postForm" class="row">
+            <input type="hidden" formControlName='userId'>
+            <input type="hidden" formControlName="status">
+            <input type="hidden" formControlName="password">
+            <input type="hidden" formControlName="token">
+            
+            <div class="col-md-7">
+                <div class="form-group mb-3">
+                    <label for="name">Họ và tên</label>
+                    <input type="text" id="name" [ngClass]="{'is-invalid':postForm.get('name')?.touched && postForm.get('name')?.invalid}" class="form-control" formControlName="name">
+                    <small class="invalid-feedback">Tên không hợp lệ</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Địa chỉ Email</label>
+                    <input type="email" id="email" [ngClass]="{'is-invalid':postForm.get('email')?.touched && postForm.get('email')?.invalid}" class="form-control" formControlName="email">
+                    <small class="invalid-feedback">Email không hợp lệ</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text" id="address" [ngClass]="{'is-invalid':postForm.get('address')?.touched && postForm.get('address')?.invalid}" class="form-control" formControlName="address">
+                    <small class="invalid-feedback">Địa chỉ không hợp lệ</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-7 mb-3">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" id="phone" [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}" class="form-control" formControlName="phone">
+                        <small class="invalid-feedback">Số điện thoại không hợp lệ</small>
+                    </div>
+                    <div class="form-group col-md-5 mb-3">
+                        <label for="gender">Giới tính</label>
+                        <select class="custom-select" id="gender" name="gender" formControlName="gender">
+                            <option value="true">Nam</option>
+                            <option value="false">Nữ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 text-center d-flex flex-column align-items-center justify-content-center border-left">
+                <label class="font-weight-600 mb-2">Ảnh đại diện</label>
+                <img [src]="image" 
+                     (error)="$any($event.target).src='https://ui-avatars.com/api/?name=Admin&background=059669&color=fff'"
+                     style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; border: 3px solid #059669; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" 
+                     class="mt-2 mb-3" alt="Avatar">
+                <input type="file" id="profileFile" hidden (change)="onFileSelect($event)">
+                <label for="profileFile" class="btn btn-outline-primary btn-sm m-0">
+                    <i class="fas fa-camera mr-1"></i> Thay đổi ảnh
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-light" (click)="d()">Hủy</button>
+        <button type="button" class="btn btn-primary px-4" [disabled]="postForm?.invalid" (click)="update()">
+            <i class="fas fa-save mr-1"></i> Lưu thay đổi
+        </button>
+    </div>
+</ng-template>
+
+<a class="dropdown-item py-2" style="cursor: pointer;" (click)="open(content)">
+    <i class="fas fa-user-circle fa-sm fa-fw mr-2 text-primary"></i> Thông tin cá nhân
+</a>

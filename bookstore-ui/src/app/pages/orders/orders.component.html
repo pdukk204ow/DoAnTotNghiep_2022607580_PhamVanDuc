@@ -1,0 +1,65 @@
+<section class="orders-page">
+  <div class="container">
+    <h1 class="orders-title">
+      Đơn hàng của tôi
+    </h1>
+
+    <p *ngIf="!loading && orders.length === 0" style="color:#6b7280; padding: 30px 0;">
+      Bạn chưa có đơn hàng nào.
+    </p>
+
+    <div class="order-card" *ngFor="let order of orders">
+      <!-- TOP -->
+      <div class="order-top">
+        <div>
+          <h3>
+            Đơn #{{ order.id }}
+          </h3>
+          <p>
+            {{ order.date | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+        </div>
+        <span class="status" [ngClass]="'status-' + order.statusCode">{{ order.status }}</span>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="order-product" *ngFor="let item of order.items">
+        <img [src]="item.image" alt="" />
+        <div>
+          <h4>
+            {{ item.name }}
+          </h4>
+          <p>
+            x{{ item.quantity }}
+          </p>
+        </div>
+      </div>
+
+      <!-- SHIPPING -->
+      <div class="order-shipping" *ngIf="order.shippingAddress">
+        <span class="shipping-label">Giao tới:</span>
+        <div class="shipping-info">
+          <strong>
+            {{ order.shippingAddress.name }} - {{ order.shippingAddress.phone }}
+          </strong>
+          <p>{{ order.shippingAddress.street }}</p>
+        </div>
+      </div>
+
+      <!-- CANCEL BUTTON -->
+      <div class="order-actions" *ngIf="order.statusCode === 0">
+        <button class="btn-cancel" (click)="cancelOrder(order.id)">
+          Hủy đơn hàng
+        </button>
+      </div>
+
+      <!-- TOTAL -->
+      <div class="order-total">
+        Tổng cộng:
+        <strong>
+          {{ order.total | number }} đ
+        </strong>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,78 @@
+<section class="cart-page">
+  <div class="container">
+    <h1 class="page-title">Giỏ hàng</h1>
+
+    <div class="discontinued-alert" *ngIf="hasDiscontinuedItems()">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <div class="alert-title">Có sản phẩm ngừng kinh doanh trong giỏ hàng</div>
+        <div class="alert-desc">Một số sản phẩm đã ngừng kinh doanh. Vui lòng bấm biểu tượng thùng rác để xoá trước khi thanh toán.</div>
+      </div>
+      <button class="clear-discontinued-btn" (click)="removeDiscontinuedItems()">Xoá tất cả sản phẩm đã ngừng</button>
+    </div>
+
+    <div class="cart-empty" *ngIf="cartItems.length === 0">
+      <div class="empty-icon">🛒</div>
+      <h2>Giỏ hàng của bạn đang trống</h2>
+      <p>Hãy khám phá thêm hàng ngàn cuốn sách hay tại Văn Đức Bookstore nhé!</p>
+      <a routerLink="/" class="continue-btn">Tiếp tục mua sắm</a>
+    </div>
+
+    <div class="cart-wrapper" *ngIf="cartItems.length > 0">
+      <div class="cart-products">
+        <div class="cart-item" [class.is-discontinued]="item.discontinued" *ngFor="let item of cartItems">
+
+          <div class="check-col">
+            <input *ngIf="!item.discontinued" type="checkbox" [(ngModel)]="item.selected" (change)="cartService.saveCart()" class="cart-check" />
+            <span *ngIf="item.discontinued" class="check-disabled" title="Sản phẩm đã ngừng kinh doanh">⛔</span>
+          </div>
+
+          <div class="cart-image">
+            <img [src]="item.image" (error)="onImgError($event)" alt="" />
+            <div *ngIf="item.discontinued" class="discontinued-overlay">Ngừng bán</div>
+          </div>
+
+          <div class="cart-info">
+            <div class="title-row">
+              <h3>{{ item.name }}</h3>
+              <span *ngIf="item.discontinued" class="badge-discontinued">Ngừng kinh doanh</span>
+            </div>
+            <p class="author">{{ item.author }}</p>
+            <div class="cart-price" [class.price-muted]="item.discontinued">{{ item.price | number }}đ</div>
+            <div *ngIf="item.discontinued" class="discontinued-hint">Sản phẩm này hiện đã ngừng kinh doanh và không thể đặt mua.</div>
+          </div>
+
+          <div class="quantity-box" *ngIf="!item.discontinued">
+            <button (click)="decrease(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="increase(item)">+</button>
+          </div>
+
+          <button class="remove-btn" [class.remove-btn-discontinued]="item.discontinued" (click)="removeItem(item)">🗑️</button>
+
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h3>Tóm tắt đơn hàng</h3>
+        <div class="summary-row">
+          <span>Tạm tính</span>
+          <strong>{{ getSubtotal() | number }}đ</strong>
+        </div>
+        <div class="summary-row">
+          <span>Phí vận chuyển</span>
+          <strong>{{ getShippingFee() | number }}đ</strong>
+        </div>
+        <div class="summary-total">
+          <span>Tổng cộng</span>
+          <strong>{{ getTotal() | number }}đ</strong>
+        </div>
+        <button class="checkout-btn" [disabled]="hasNoValidSelection()" routerLink="/checkout">Tiến hành thanh toán</button>
+        <p class="checkout-hint" *ngIf="hasNoValidSelection()">
+          <span *ngIf="hasDiscontinuedItems()">Vui lòng xoá sản phẩm ngừng kinh doanh hoặc chọn sản phẩm khả dụng để thanh toán.</span>
+          <span *ngIf="!hasDiscontinuedItems()">Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

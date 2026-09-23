@@ -1,0 +1,6 @@
+﻿# Mark Angular/TypeScript projects as vendored so GitHub Linguist ignores them
+angular-admin/** linguist-vendored
+bookstore-ui/** linguist-vendored
+
+# Also mark docs as documentation
+docs/** linguist-documentation

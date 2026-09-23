@@ -1,0 +1,582 @@
+/* Global Modern Design System for VanDucBookStore Admin */
+
+:root {
+  --font-main: 'Plus Jakarta Sans', Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --primary-color: #059669;
+  --primary-hover: #047857;
+  --primary-light: rgba(5, 150, 105, 0.08);
+  --primary-glow: rgba(5, 150, 105, 0.25);
+  --sidebar-bg: #0f172a;
+  --sidebar-hover: #1e293b;
+  --sidebar-active: #10b981;
+  --sidebar-text: #94a3b8;
+  --sidebar-text-active: #ffffff;
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --border-subtle: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --radius-card: 14px;
+  --radius-btn: 8px;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-main);
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Layout Overrides */
+#wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+#content-wrapper {
+  background-color: var(--bg-canvas) !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#content {
+  flex: 1 0 auto;
+}
+
+/* Admin Container & Page Headings */
+.container-fluid {
+  padding: 1.75rem 2rem !important;
+}
+
+.page-title, h1.h3 {
+  font-family: var(--font-main) !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.02em;
+  margin-bottom: 0 !important;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Admin Cards */
+.admin-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.admin-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.admin-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #ffffff;
+}
+
+.admin-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-card-body {
+  padding: 1.5rem;
+}
+
+/* Modern Card Toolbars & Search */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.search-input-group {
+  position: relative;
+  min-width: 260px;
+}
+
+.search-input-group i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+.search-input-group input {
+  width: 100%;
+  padding: 0.55rem 1rem 0.55rem 2.5rem;
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-family: var(--font-main);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.search-input-group input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* Material Table Overrides */
+.mat-elevation-z8, table.mat-table {
+  width: 100%;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-main) !important;
+}
+
+.mat-header-row {
+  background-color: #f8fafc !important;
+  height: 48px !important;
+}
+
+.mat-header-cell {
+  font-family: var(--font-main) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #475569 !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  padding: 12px 12px !important;
+  white-space: nowrap;
+}
+
+.mat-row {
+  height: 58px !important;
+  transition: background-color 0.15s ease;
+}
+
+.mat-row:hover {
+  background-color: #f8fafc !important;
+}
+
+.mat-cell {
+  font-family: var(--font-main) !important;
+  font-size: 0.875rem !important;
+  color: #1e293b !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  padding: 12px 12px !important;
+}
+
+/* Paginator */
+.mat-paginator {
+  background-color: #ffffff !important;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-main) !important;
+  font-size: 0.85rem !important;
+  color: var(--text-muted) !important;
+  padding: 0.5rem 1rem !important;
+}
+
+/* Status Pill Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status-pill i {
+  font-size: 0.65rem;
+}
+
+.status-pill.status-pending {
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.status-pill.status-shipping {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.status-pill.status-delivered {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.status-pill.status-cancelled {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* Soft Badges */
+.badge-soft-primary {
+  background-color: rgba(5, 150, 105, 0.1) !important;
+  color: #059669 !important;
+}
+
+.badge-soft-danger {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+}
+
+.badge-soft-purple {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+  color: #7c3aed !important;
+}
+
+.badge-soft-blue {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #2563eb !important;
+}
+
+.badge-soft-amber {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #d97706 !important;
+}
+
+.badge-soft-emerald {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+}
+
+/* Action Icon Buttons */
+.action-btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.action-btn-edit {
+  color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.08);
+}
+.action-btn-edit:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.action-btn-delete {
+  color: #dc2626;
+  background-color: rgba(220, 38, 38, 0.08);
+}
+.action-btn-delete:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.action-btn-check {
+  color: #059669;
+  background-color: rgba(5, 150, 105, 0.08);
+}
+.action-btn-check:hover {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+/* Thumbnails */
+.book-cover-thumb {
+  width: 44px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  background-color: #f1f5f9;
+  display: block;
+}
+
+.user-avatar-thumb {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ffffff;
+  background-color: #f1f5f9;
+}
+
+/* Modern Buttons */
+.btn-primary-gradient, button.mat-raised-button.mat-primary {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #ffffff !important;
+  border-radius: var(--radius-btn) !important;
+  font-family: var(--font-main) !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.25) !important;
+  border: none !important;
+  padding: 0 16px !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary-gradient:hover, button.mat-raised-button.mat-primary:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
+  box-shadow: 0 4px 8px rgba(5, 150, 105, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-primary-modern {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-family: var(--font-main) !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 8px 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.btn-primary-modern:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
+  transform: translateY(-2px) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary-modern:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+.btn-secondary-modern {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-secondary-modern:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Modern Modals */
+.modal-content {
+  border-radius: 16px !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: var(--shadow-lg) !important;
+  font-family: var(--font-main) !important;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  padding: 1.25rem 1.75rem !important;
+  align-items: center;
+}
+
+.modal-header .modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.modal-header .close {
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem -0.5rem auto;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  outline: none;
+}
+
+.modal-header .close:hover {
+  background-color: #f1f5f9;
+}
+
+.modal-body {
+  padding: 1.75rem !important;
+  background: #ffffff;
+}
+
+.modal-footer {
+  background: #f8fafc;
+  border-top: 1px solid var(--border-subtle) !important;
+  padding: 1rem 1.75rem !important;
+}
+
+/* Form Controls in Admin */
+.form-control, .custom-select {
+  border-radius: 8px !important;
+  border: 1px solid var(--border-subtle) !important;
+  font-family: var(--font-main) !important;
+  font-size: 0.875rem !important;
+  color: var(--text-main) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.form-control:focus, .custom-select:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+label {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+/* Scrollable table container with custom sleek scrollbar */
+.table-scroll-container {
+  max-height: 480px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.table-scroll-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-scroll-container::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.table-scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.table-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sticky card for charts */
+.sticky-chart-card {
+  position: sticky;
+  top: 90px;
+}
+
+
+/* Sidebar Nav Icon Overrides (Prevent SB-Admin-2 interference) */
+.sidebar .nav-item .nav-link .nav-icon-box,
+.nav-icon-box {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  margin: 0 0.75rem 0 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+  font-size: 0.95rem !important;
+}
+
+.sidebar .nav-item .nav-link .nav-icon-box i,
+.nav-icon-box i {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.95rem !important;
+  width: auto !important;
+}

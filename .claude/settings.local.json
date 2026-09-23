@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "PowerShell(Select-String -Path \"d:\\\\book\\\\book\\\\database.sql\" -Pattern \"INSERT INTO ``products``|INSERT INTO ``users``|INSERT INTO ``categories``|INSERT INTO ``user_roles``\" | ForEach-Object { $_.Line.Substring\\(0, [Math]::Min\\(500, $_.Line.Length\\)\\) })",
+      "PowerShell(Select-String -Path \"d:\\\\book\\\\book\\\\VinaBookStore\\\\pom.xml\" -Pattern \"spring-boot-starter-parent|mysql|version\" -Context 0,1 | Select-Object -First 20 | ForEach-Object { $_.Line.Trim\\(\\) })",
+      "PowerShell($raw = [IO.File]::ReadAllText\\(\"d:\\\\book\\\\book\\\\database.sql\", [Text.Encoding]::UTF8\\); $raw = $raw.Replace\\('`martfury_shop`', '`book`'\\); [IO.File]::WriteAllText\\(\"$env:TEMP\\\\book_import.sql\", $raw, \\(New-Object Text.UTF8Encoding\\($false\\)\\)\\); Write-Host \"Temp file ready: $\\(\\(Get-Item \"$env:TEMP\\\\book_import.sql\"\\).Length\\) bytes\")",
+      "PowerShell($javaPath = \\(Get-Command java\\).Source; $javaHome = Split-Path \\(Split-Path $javaPath\\); Write-Host \"JAVA_HOME = $javaHome\"; $env:JAVA_HOME = $javaHome; Set-Location \"d:\\\\book\\\\book\\\\VinaBookStore\"; .\\\\mvnw.cmd clean package -DskipTests -q)"
+    ]
+  }
+}

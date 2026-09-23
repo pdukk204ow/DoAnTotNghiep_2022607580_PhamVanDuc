@@ -1,0 +1,17 @@
+Implement full navbar navigation + fix category dropdown UX
+
+- Add BooksComponent (4 modes via route data): /books all-books with search/sort/pagination,
+  /books/new sorted by enteredDate with MỚI badge, /books/bestseller sorted by sold with
+  rank badges #1/#2/#3, /books/sale discount-only sorted by discount desc
+- Add AboutComponent (/about): mission/vision/why-us sections + live stats from APIs
+  (book count, category count, customer count via forkJoin)
+- Add ContactComponent (/contact): store info, template-driven contact form with
+  validation + toast, FAQ accordion, map placeholder
+- Fix category dropdown flicker: hover-intent (250ms close delay), transparent hover
+  bridge covering the 8px gap, always-rendered panel with CSS open/close transition
+- Wire all 6 dead navbar links to real routes with routerLinkActive green underline
+- ProductService.mapProduct() now includes enteredDate for new-arrivals sorting
+- Product card hides discount badge and old-price when discount = 0
+- CategoryComponent filters by categoryId (numeric) instead of name string
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
